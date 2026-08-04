@@ -8,7 +8,7 @@ window.TRPG_SHEET = {
      구글시트 주소가 이렇게 생겼다면
        https://docs.google.com/spreadsheets/d/1AbCdEfGhIjKlMnOpQrStUv/edit#gid=0
      가운데 이 부분만 따옵니다 →  1AbCdEfGhIjKlMnOpQrStUv               */
-  id: '여기에_스프레드시트_ID를_붙여넣으세요',
+  id: '113GmLkaZvKbncgXkNj9hL8cQJCSCjXscK--ArcUEZLLeU5sx6s',
 
   /* 2. 시트 편집 주소 (선택)
      넣어두면 화면 오른쪽 위에 편집 버튼이 생깁니다.
