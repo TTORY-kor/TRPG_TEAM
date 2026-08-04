@@ -10,51 +10,76 @@ display_url: "https://trpg-team.netlify.app"
 logo_url: "/assets/images/icon.jpg"
 
 collections:
+
+  # ─────────────────────────────────────────────
   - name: "site"
     label: "사이트 설정"
+    editor: { preview: false }
     files:
       - name: "site"
         label: "기본 설정과 테마"
         file: "assets/data/site.json"
         format: "json"
         fields:
-          - {label: "팀 이름", name: "teamName", widget: "string"}
-          - {label: "메인 제목", name: "title", widget: "string"}
-          - {label: "소개 문구", name: "description", widget: "text"}
-          - label: "전체 색상"
+          - { label: "팀 이름", name: "teamName", widget: "string", hint: "화면 왼쪽 위와 배너에 작게 들어갑니다." }
+          - { label: "메인 제목", name: "title", widget: "string", hint: "배너에 크게 나오는 문구입니다." }
+          - { label: "소개 문구", name: "description", widget: "text", required: false }
+
+          - label: "테마"
+            name: "theme"
+            widget: "select"
+            default: "인디고"
+            options: ["인디고", "먹빛", "자주", "숲", "모래", "직접 지정"]
+            hint: "고르면 아래 색상표는 무시됩니다. 직접 맞추고 싶을 때만 '직접 지정'을 고르세요."
+
+          - label: "색상 직접 지정"
             name: "colors"
             widget: "object"
+            collapsed: true
+            required: false
+            hint: "위 테마를 '직접 지정'으로 둔 경우에만 적용됩니다."
             fields:
-              - {label: "강조색", name: "accent", widget: "color", allowInput: true}
-              - {label: "페이지 배경", name: "background", widget: "color", allowInput: true}
-              - {label: "카드 배경", name: "card", widget: "color", allowInput: true}
-              - {label: "기본 글자", name: "text", widget: "color", allowInput: true}
-              - {label: "보조 글자", name: "subText", widget: "color", allowInput: true}
-              - {label: "구분선", name: "line", widget: "color", allowInput: true}
-              - {label: "어두운 카드", name: "darkCard", widget: "color", allowInput: true}
-              - {label: "어두운 카드 글자", name: "darkText", widget: "color", allowInput: true}
-              - {label: "배너 음영", name: "heroShade", widget: "color", allowInput: true}
-          - {label: "헤더 이미지", name: "heroImage", widget: "image"}
-          - {label: "프로필 이미지", name: "profileImage", widget: "image"}
-          - {label: "프로필 이름", name: "profileName", widget: "string"}
-          - {label: "소개 1", name: "profileSub1", widget: "string", required: false}
-          - {label: "소개 2", name: "profileSub2", widget: "string", required: false}
-          - {label: "진행 기간 문구", name: "profileSince", widget: "string", required: false}
+              - { label: "강조색", name: "accent", widget: "color", allowInput: true, required: false, hint: "링크, 선택된 탭, 다음 일정 표시에 쓰입니다." }
+              - { label: "페이지 배경", name: "background", widget: "color", allowInput: true, required: false }
+              - { label: "카드 배경", name: "card", widget: "color", allowInput: true, required: false }
+              - { label: "기본 글자", name: "text", widget: "color", allowInput: true, required: false }
+              - { label: "보조 글자", name: "subText", widget: "color", allowInput: true, required: false }
+              - { label: "구분선", name: "line", widget: "color", allowInput: true, required: false }
+              - { label: "어두운 카드", name: "darkCard", widget: "color", allowInput: true, required: false }
+              - { label: "어두운 카드 글자", name: "darkText", widget: "color", allowInput: true, required: false }
+              - { label: "배너 음영", name: "heroShade", widget: "color", allowInput: true, required: false, hint: "배너 사진 위에 덮는 어두운 막의 색입니다." }
+
+          - { label: "배너 이미지", name: "heroImage", widget: "image", required: false, hint: "가로로 긴 사진이 잘 맞습니다. 권장 1600×600." }
+          - { label: "프로필 이미지", name: "profileImage", widget: "image", required: false, hint: "정사각형 이미지를 권장합니다." }
+          - { label: "메인 일러스트", name: "mainImage", widget: "image", required: false, hint: "홈 탭 맨 위에 들어갑니다. 비워두면 표시되지 않습니다." }
+
+          - { label: "프로필 이름", name: "profileName", widget: "string", required: false }
+          - { label: "소개 1", name: "profileSub1", widget: "string", required: false }
+          - { label: "소개 2", name: "profileSub2", widget: "string", required: false }
+          - { label: "진행 기간 문구", name: "profileSince", widget: "string", required: false, hint: "예: since 2026.03" }
+
           - label: "주요 링크"
             name: "profileLinks"
+            label_singular: "링크"
             widget: "list"
+            collapsed: true
+            required: false
             summary: "{{fields.label}}"
+            hint: "프로필 아래에 한 줄로 나열됩니다. 코코포리아, 디스코드 등."
             fields:
-              - {label: "링크 이름", name: "label", widget: "string"}
-              - {label: "주소", name: "url", widget: "string"}
-          - {label: "메인 일러스트", name: "mainImage", widget: "image"}
-          - {label: "음악 제목", name: "musicTitle", widget: "string", required: false}
-          - {label: "아티스트", name: "musicArtist", widget: "string", required: false}
-          - {label: "YouTube 영상 ID", name: "musicYoutubeId", widget: "string", required: false}
-          - {label: "하단 문구", name: "footer", widget: "string", required: false}
+              - { label: "링크 이름", name: "label", widget: "string" }
+              - { label: "주소", name: "url", widget: "string", hint: "https:// 부터 전부 붙여넣으세요." }
 
+          - { label: "곡 제목", name: "musicTitle", widget: "string", required: false, hint: "세 칸을 모두 비우면 음악 칸이 화면에서 사라집니다." }
+          - { label: "아티스트", name: "musicArtist", widget: "string", required: false }
+          - { label: "YouTube 영상 ID", name: "musicYoutubeId", widget: "string", required: false, hint: "주소가 youtu.be/dQw4w9WgXcQ 라면 dQw4w9WgXcQ 부분만 넣습니다." }
+
+          - { label: "하단 문구", name: "footer", widget: "string", required: false }
+
+  # ─────────────────────────────────────────────
   - name: "schedules"
     label: "진행 일정"
+    editor: { preview: false }
     files:
       - name: "schedules"
         label: "일정 목록"
@@ -63,20 +88,24 @@ collections:
         fields:
           - label: "일정"
             name: "items"
+            label_singular: "일정"
             widget: "list"
-            root: true
+            collapsed: true
+            add_to_top: true
             summary: "{{fields.date}} · {{fields.title}}"
             fields:
-              - {label: "날짜", name: "date", widget: "datetime", date_format: "YYYY-MM-DD", time_format: false, format: "YYYY-MM-DD"}
-              - {label: "시간", name: "time", widget: "string", required: false}
-              - {label: "제목", name: "title", widget: "string"}
-              - {label: "설명", name: "description", widget: "text", required: false}
-              - {label: "장소", name: "location", widget: "string", required: false}
-              - {label: "관련 주소", name: "url", widget: "string", required: false}
-              - {label: "공개 상태", name: "status", widget: "select", options: ["공개", "비공개"], default: "공개"}
+              - { label: "날짜", name: "date", widget: "datetime", date_format: "YYYY-MM-DD", time_format: false, format: "YYYY-MM-DD", hint: "오늘 이후면 '예정', 지나면 자동으로 '지난 일정'으로 내려갑니다." }
+              - { label: "시간", name: "time", widget: "string", required: false, hint: "예: 21:00" }
+              - { label: "제목", name: "title", widget: "string" }
+              - { label: "설명", name: "description", widget: "text", required: false, hint: "줄을 나눠 쓰면 화면에도 그대로 나옵니다." }
+              - { label: "장소", name: "location", widget: "string", required: false, hint: "예: 코코포리아, 디스코드 3번 방" }
+              - { label: "관련 주소", name: "url", widget: "string", required: false }
+              - { label: "공개 상태", name: "status", widget: "select", options: ["공개", "비공개"], default: "공개" }
 
+  # ─────────────────────────────────────────────
   - name: "notices"
     label: "공지사항"
+    editor: { preview: false }
     files:
       - name: "notices"
         label: "공지 목록"
@@ -85,19 +114,23 @@ collections:
         fields:
           - label: "공지"
             name: "items"
+            label_singular: "공지"
             widget: "list"
-            root: true
+            collapsed: true
+            add_to_top: true
             summary: "{{fields.date}} · {{fields.title}}"
             fields:
-              - {label: "날짜", name: "date", widget: "datetime", date_format: "YYYY-MM-DD", time_format: false, format: "YYYY-MM-DD"}
-              - {label: "제목", name: "title", widget: "string"}
-              - {label: "내용", name: "content", widget: "text"}
-              - {label: "관련 주소", name: "url", widget: "string", required: false}
-              - {label: "상단 고정", name: "pinned", widget: "boolean", default: false}
-              - {label: "공개 상태", name: "status", widget: "select", options: ["공개", "비공개"], default: "공개"}
+              - { label: "날짜", name: "date", widget: "datetime", date_format: "YYYY-MM-DD", time_format: false, format: "YYYY-MM-DD" }
+              - { label: "제목", name: "title", widget: "string" }
+              - { label: "내용", name: "content", widget: "text", hint: "줄을 나눠 쓰면 화면에도 그대로 나옵니다." }
+              - { label: "관련 주소", name: "url", widget: "string", required: false }
+              - { label: "맨 위에 고정", name: "pinned", widget: "boolean", default: false, hint: "켜면 날짜와 상관없이 목록 맨 위로 올라가고 왼쪽에 선이 생깁니다." }
+              - { label: "공개 상태", name: "status", widget: "select", options: ["공개", "비공개"], default: "공개" }
 
+  # ─────────────────────────────────────────────
   - name: "sheets"
     label: "시트"
+    editor: { preview: false }
     files:
       - name: "sheets"
         label: "시트 게시 목록"
@@ -106,20 +139,23 @@ collections:
         fields:
           - label: "시트"
             name: "items"
+            label_singular: "시트"
             widget: "list"
-            root: true
-            summary: "{{fields.title}}"
+            collapsed: true
+            summary: "{{fields.title}} · {{fields.status}}"
             fields:
-              - {label: "제목", name: "title", widget: "string"}
-              - {label: "담당/소유자", name: "owner", widget: "string", required: false}
-              - {label: "설명", name: "description", widget: "text", required: false}
-              - {label: "대표 이미지", name: "image", widget: "image", required: false}
-              - {label: "시트 주소", name: "url", widget: "string", required: false}
-              - {label: "메모", name: "content", widget: "text", required: false}
-              - {label: "공개 상태", name: "status", widget: "select", options: ["공개", "잠금", "비공개"], default: "공개"}
+              - { label: "제목", name: "title", widget: "string" }
+              - { label: "담당/소유자", name: "owner", widget: "string", required: false, hint: "예: 소마 / 지민" }
+              - { label: "설명", name: "description", widget: "text", required: false }
+              - { label: "대표 이미지", name: "image", widget: "image", required: false }
+              - { label: "시트 주소", name: "url", widget: "string", required: false }
+              - { label: "메모", name: "content", widget: "text", required: false, hint: "'내용 보기'로 접혀서 들어갑니다." }
+              - { label: "공개 상태", name: "status", widget: "select", options: ["공개", "잠금", "비공개"], default: "공개", hint: "잠금 = 제목과 자물쇠만 보이고 내용은 가립니다. 비공개 = 화면에 아예 안 나옵니다." }
 
+  # ─────────────────────────────────────────────
   - name: "handouts"
     label: "핸드아웃"
+    editor: { preview: false }
     files:
       - name: "handouts"
         label: "핸드아웃 목록"
@@ -128,22 +164,26 @@ collections:
         fields:
           - label: "핸드아웃"
             name: "items"
+            label_singular: "핸드아웃"
             widget: "list"
-            root: true
+            collapsed: true
+            add_to_top: true
             summary: "{{fields.title}} · {{fields.status}}"
             fields:
-              - {label: "제목", name: "title", widget: "string"}
-              - {label: "등록일", name: "date", widget: "datetime", date_format: "YYYY-MM-DD", time_format: false, format: "YYYY-MM-DD", required: false}
-              - {label: "분류", name: "category", widget: "string", required: false}
-              - {label: "설명", name: "description", widget: "text", required: false}
-              - {label: "대표 이미지", name: "image", widget: "image", required: false}
-              - {label: "첨부 파일", name: "file", widget: "file", required: false}
-              - {label: "외부 주소", name: "url", widget: "string", required: false}
-              - {label: "본문", name: "content", widget: "text", required: false}
-              - {label: "공개 상태", name: "status", widget: "select", options: ["공개", "잠금", "비공개"], default: "공개"}
+              - { label: "제목", name: "title", widget: "string" }
+              - { label: "등록일", name: "date", widget: "datetime", date_format: "YYYY-MM-DD", time_format: false, format: "YYYY-MM-DD", required: false, hint: "홈 화면 '새 자료'는 이 날짜가 최신인 것부터 보여줍니다." }
+              - { label: "분류", name: "category", widget: "string", required: false, hint: "예: 공통, 미스티 전용, 비밀" }
+              - { label: "설명", name: "description", widget: "text", required: false }
+              - { label: "대표 이미지", name: "image", widget: "image", required: false }
+              - { label: "첨부 파일", name: "file", widget: "file", required: false, media_folder: "/assets/files", public_folder: "/assets/files", hint: "PDF 등은 이미지 폴더가 아니라 assets/files에 따로 쌓입니다." }
+              - { label: "외부 주소", name: "url", widget: "string", required: false }
+              - { label: "본문", name: "content", widget: "text", required: false, hint: "'내용 보기'로 접혀서 들어갑니다." }
+              - { label: "공개 상태", name: "status", widget: "select", options: ["공개", "잠금", "비공개"], default: "공개", hint: "세션 전에는 잠금, 진행 후 공개로 바꾸는 식으로 씁니다." }
 
+  # ─────────────────────────────────────────────
   - name: "characters"
     label: "등장인물"
+    editor: { preview: false }
     files:
       - name: "characters"
         label: "플레이어 캐릭터"
@@ -152,27 +192,37 @@ collections:
         fields:
           - label: "캐릭터"
             name: "items"
+            label_singular: "캐릭터"
             widget: "list"
-            root: true
+            collapsed: true
             summary: "{{fields.name}}"
             fields:
-              - {label: "ID", name: "id", widget: "string"}
-              - {label: "이름", name: "name", widget: "string"}
-              - {label: "배너", name: "banner", widget: "image"}
-              - {label: "스탠딩", name: "standing", widget: "image"}
-              - {label: "강조색", name: "accent", widget: "color", allowInput: true}
-              - {label: "한마디", name: "quote", widget: "string", required: false}
-              - {label: "직업", name: "job", widget: "string", required: false}
-              - {label: "나이", name: "age", widget: "string", required: false}
-              - {label: "거주지", name: "location", widget: "string", required: false}
+              - label: "ID"
+                name: "id"
+                widget: "string"
+                pattern: ["^[a-z0-9][a-z0-9-]*$", "영문 소문자, 숫자, 붙임표(-)만 씁니다. 예: soma"]
+                hint: "바로가기 주소에 쓰입니다. 예: soma → 사이트주소/#cast/char-soma"
+              - { label: "이름", name: "name", widget: "string" }
+              - { label: "배너", name: "banner", widget: "image", required: false, hint: "카드 위쪽 가로 띠입니다. 가로로 긴 이미지." }
+              - { label: "스탠딩", name: "standing", widget: "image", required: false, hint: "세로로 긴 전신 이미지. 없으면 자리를 차지하지 않습니다." }
+              - { label: "강조색", name: "accent", widget: "color", allowInput: true, required: false, hint: "이 캐릭터 카드 안의 인용부호와 접힘 제목 색입니다." }
+              - { label: "한마디", name: "quote", widget: "string", required: false }
+              - { label: "직업", name: "job", widget: "string", required: false }
+              - { label: "나이", name: "age", widget: "string", required: false }
+              - { label: "거주지", name: "location", widget: "string", required: false }
               - label: "소개 항목"
                 name: "story"
+                label_singular: "항목"
                 widget: "list"
+                collapsed: true
                 required: false
+                summary: "{{fields.title}}"
+                hint: "제목을 누르면 펼쳐지는 형태로 들어갑니다."
                 fields:
-                  - {label: "제목", name: "title", widget: "string"}
-                  - {label: "내용", name: "content", widget: "text"}
-              - {label: "공개 상태", name: "status", widget: "select", options: ["공개", "비공개"], default: "공개"}
+                  - { label: "제목", name: "title", widget: "string" }
+                  - { label: "내용", name: "content", widget: "text" }
+              - { label: "공개 상태", name: "status", widget: "select", options: ["공개", "비공개"], default: "공개" }
+
       - name: "npc"
         label: "관계 인물"
         file: "assets/data/npc.json"
@@ -180,18 +230,21 @@ collections:
         fields:
           - label: "인물"
             name: "items"
+            label_singular: "인물"
             widget: "list"
-            root: true
-            summary: "{{fields.name}}"
+            collapsed: true
+            summary: "{{fields.name}} · {{fields.relation}}"
             fields:
-              - {label: "이름", name: "name", widget: "string"}
-              - {label: "이미지", name: "image", widget: "image"}
-              - {label: "관계", name: "relation", widget: "select", options: ["적", "아군", "중립", "의뢰인"]}
-              - {label: "설명", name: "description", widget: "text", required: false}
-              - {label: "공개 상태", name: "status", widget: "select", options: ["공개", "비공개"], default: "공개"}
+              - { label: "이름", name: "name", widget: "string" }
+              - { label: "이미지", name: "image", widget: "image", required: false, hint: "동그랗게 잘립니다. 정사각형 권장." }
+              - { label: "관계", name: "relation", widget: "select", options: ["적", "아군", "중립", "의뢰인"], default: "중립", required: false, hint: "카드 오른쪽 위 색 딱지로 표시됩니다." }
+              - { label: "설명", name: "description", widget: "text", required: false }
+              - { label: "공개 상태", name: "status", widget: "select", options: ["공개", "비공개"], default: "공개" }
 
+  # ─────────────────────────────────────────────
   - name: "records"
     label: "세션 기록"
+    editor: { preview: false }
     files:
       - name: "records"
         label: "기록 목록"
@@ -200,21 +253,25 @@ collections:
         fields:
           - label: "기록"
             name: "items"
+            label_singular: "기록"
             widget: "list"
-            root: true
+            collapsed: true
+            add_to_top: true
             summary: "{{fields.session}} · {{fields.title}}"
             fields:
-              - {label: "회차", name: "session", widget: "string", required: false}
-              - {label: "날짜", name: "date", widget: "datetime", date_format: "YYYY-MM-DD", time_format: false, format: "YYYY-MM-DD"}
-              - {label: "제목", name: "title", widget: "string"}
-              - {label: "요약", name: "summary", widget: "text", required: false}
-              - {label: "대표 이미지", name: "image", widget: "image", required: false}
-              - {label: "본문 기록", name: "content", widget: "text", required: false}
-              - {label: "로그/기록 주소", name: "url", widget: "string", required: false}
-              - {label: "공개 상태", name: "status", widget: "select", options: ["공개", "비공개"], default: "공개"}
+              - { label: "회차", name: "session", widget: "string", required: false, hint: "예: SESSION 03" }
+              - { label: "날짜", name: "date", widget: "datetime", date_format: "YYYY-MM-DD", time_format: false, format: "YYYY-MM-DD" }
+              - { label: "제목", name: "title", widget: "string" }
+              - { label: "요약", name: "summary", widget: "text", required: false }
+              - { label: "대표 이미지", name: "image", widget: "image", required: false }
+              - { label: "본문 기록", name: "content", widget: "text", required: false, hint: "외부 링크 없이 사이트 안에서 접었다 펼 수 있습니다." }
+              - { label: "로그/기록 주소", name: "url", widget: "string", required: false }
+              - { label: "공개 상태", name: "status", widget: "select", options: ["공개", "비공개"], default: "공개" }
 
+  # ─────────────────────────────────────────────
   - name: "gallery"
     label: "갤러리"
+    editor: { preview: false }
     files:
       - name: "gallery"
         label: "이미지 목록"
@@ -223,10 +280,12 @@ collections:
         fields:
           - label: "이미지"
             name: "items"
+            label_singular: "이미지"
             widget: "list"
-            root: true
+            collapsed: true
+            add_to_top: true
             summary: "{{fields.credit}}"
             fields:
-              - {label: "이미지", name: "image", widget: "image"}
-              - {label: "크레딧", name: "credit", widget: "string", required: false}
-              - {label: "공개 상태", name: "status", widget: "select", options: ["공개", "비공개"], default: "공개"}
+              - { label: "이미지", name: "image", widget: "image" }
+              - { label: "크레딧", name: "credit", widget: "string", required: false, hint: "크게 볼 때 아래에 표시됩니다." }
+              - { label: "공개 상태", name: "status", widget: "select", options: ["공개", "비공개"], default: "공개" }
