@@ -57,6 +57,7 @@ gallery6.jpg
 ## 주의 사항
 
 - 이미지 파일명이 HTML에 적힌 이름과 정확히 같아야 합니다.
+- 
 - 탐사자 시트 버튼은 현재 비활성화되어 있습니다. `index.html`에서 해당 링크의 `href`를 실제 URL로 바꾸고 `onclick`, `aria-disabled`, `title` 속성을 제거하세요.
 - `Ho2`, `Ho3`, `Ho4` 상세 페이지는 원본 안내대로 `char-ho1` 섹션을 복사해 추가해야 합니다.
 - 외부 Google Fonts, YouTube 썸네일, placeholder.com 이미지를 사용하므로 인터넷 연결이 필요합니다.
