@@ -1,99 +1,210 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" data-theme="light">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="TRPG_TEAM 캐릭터 아카이브">
-  <title>TRPG_TEAM</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Nanum+Myeongjo:wght@400;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/site.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="TRPG 세션 진행 안내 포털">
+<meta name="color-scheme" content="light dark">
+<title>TRPG_TEAM</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/site.css">
 </head>
+
 <body>
-  <a class="admin-gear" href="admin/" aria-label="관리자 페이지" title="관리자 페이지">⚙</a>
-  <button class="mobile-menu" id="mobileMenu" aria-label="사이드바 열기">☰</button>
-  <div class="overlay" id="overlay"></div>
 
-  <div class="page-shell">
-    <header class="hero">
-      <img id="heroImage" src="assets/images/office.jpg" alt="헤더 배너">
-      <div class="hero-shade"></div>
-      <div class="hero-copy">
-        <span class="eyebrow" id="teamName">TRPG_TEAM</span>
-        <h1 id="siteTitle">Character Archive</h1>
-        <p id="siteDescription">우리들의 세션과 캐릭터를 기록합니다.</p>
-      </div>
-    </header>
+<!-- ── 상단 바 ─────────────────────────────────────────── -->
+<header class="topbar">
+  <button class="icon-btn nav-toggle" id="navToggle" aria-label="메뉴 열기" aria-expanded="false" aria-controls="sidebar">
+    <span class="bars" aria-hidden="true"></span>
+  </button>
+  <span class="topbar-name" id="topTeam">TRPG_TEAM</span>
+  <div class="topbar-actions">
+    <button class="icon-btn" id="themeToggle" aria-label="어두운 화면으로 전환" title="화면 밝기 전환">
+      <span id="themeIcon" aria-hidden="true">☾</span>
+    </button>
+    <a class="icon-btn" href="admin/" title="관리자 페이지" aria-label="관리자 페이지">⚙</a>
+  </div>
+</header>
 
-    <div class="layout">
-      <aside class="sidebar" id="sidebar">
-        <section class="profile-card">
-          <img id="profileImage" class="profile-image" src="assets/images/icon.jpg" alt="프로필">
-          <h2 id="profileName">탁 이름</h2>
-          <p id="profileSub1">탁 소개 1</p>
-          <p id="profileSub2">탁 소개 2</p>
-          <p class="since" id="profileSince">since 2000.01.01</p>
-          <nav class="profile-links" id="profileLinks" aria-label="프로필 링크"></nav>
-        </section>
+<div class="scrim" id="scrim" hidden></div>
 
-        <section class="music-card">
-          <img id="musicThumb" src="https://img.youtube.com/vi/YKQ9v_cz9Y4/mqdefault.jpg" alt="음악 썸네일">
-          <div>
-            <strong id="musicTitle">The Legend of Ashitaka</strong>
-            <span id="musicArtist">Joe Hisaishi</span>
-          </div>
-          <a id="musicLink" href="https://youtu.be/YKQ9v_cz9Y4" target="_blank" rel="noopener" aria-label="음악 열기">▶</a>
-        </section>
+<div class="shell">
 
-        <section class="character-shortcuts" id="characterShortcuts"></section>
-        <section class="calendar" id="calendar"></section>
-      </aside>
-
-      <main class="main">
-        <nav class="tabs" id="tabs">
-          <button class="tab active" data-tab="home">Home</button>
-          <button class="tab" data-tab="characters">Characters</button>
-          <button class="tab" data-tab="npc">NPC</button>
-          <button class="tab" data-tab="gallery">Gallery</button>
-          <button class="tab" data-tab="backup">Backup</button>
-        </nav>
-
-        <section class="panel active" id="home">
-          <img id="mainImage" class="main-art" src="assets/images/main.png" alt="메인 일러스트">
-        </section>
-
-        <section class="panel" id="characters">
-          <div class="section-head"><div><span class="eyebrow">CHARACTERS</span><h2>캐릭터</h2></div></div>
-          <div id="characterList" class="character-list"></div>
-        </section>
-
-        <section class="panel" id="npc">
-          <div class="section-head"><div><span class="eyebrow">RELATIONS</span><h2>NPC</h2></div></div>
-          <div id="npcGrid" class="npc-grid"></div>
-        </section>
-
-        <section class="panel" id="gallery">
-          <div class="section-head"><div><span class="eyebrow">MEMORIES</span><h2>Gallery</h2></div></div>
-          <div id="galleryGrid" class="gallery-grid"></div>
-        </section>
-
-        <section class="panel" id="backup">
-          <div class="section-head"><div><span class="eyebrow">SESSION LOG</span><h2>Backup</h2></div></div>
-          <div id="backupList"></div>
-        </section>
-      </main>
+  <!-- ── 히어로 ──────────────────────────────────────── -->
+  <header class="hero">
+    <div class="hero-media">
+      <img id="heroImage" src="assets/images/office.jpg" alt="">
     </div>
+    <div class="hero-body">
+      <p class="eyebrow" id="teamName">TRPG_TEAM</p>
+      <h1 id="siteTitle">세션 진행 안내</h1>
+      <p class="hero-desc" id="siteDescription">일정과 자료를 한곳에서 확인합니다.</p>
+    </div>
+    <!-- 시그니처: 다음 세션 한 줄 -->
+    <button class="next-line" id="nextLine" type="button">
+      <span class="next-label">NEXT</span>
+      <span class="next-body" id="nextLineBody">불러오는 중</span>
+    </button>
+  </header>
 
-    <footer id="footerText">© 2026 TRPG_TEAM. All rights reserved.</footer>
+  <div class="layout">
+
+    <!-- ── 사이드바 ──────────────────────────────────── -->
+    <aside class="sidebar" id="sidebar" aria-label="사이트 정보">
+      <button class="sidebar-close icon-btn" id="sidebarClose" aria-label="메뉴 닫기">✕</button>
+
+      <section class="card profile">
+        <img id="profileImage" class="profile-img" src="assets/images/icon.jpg" alt="">
+        <h2 id="profileName">탁 이름</h2>
+        <p class="profile-sub" id="profileSub1"></p>
+        <p class="profile-sub" id="profileSub2"></p>
+        <p class="profile-since mono" id="profileSince"></p>
+        <nav class="profile-links" id="profileLinks" aria-label="주요 링크"></nav>
+      </section>
+
+      <section class="card calendar" id="calendar" aria-label="일정 달력"></section>
+
+      <section class="cast-rail" id="castRail" aria-label="인물 바로가기"></section>
+
+      <section class="card music" id="musicCard" hidden>
+        <img id="musicThumb" src="" alt="">
+        <div class="music-meta">
+          <strong id="musicTitle"></strong>
+          <span id="musicArtist"></span>
+        </div>
+        <a id="musicLink" href="#" target="_blank" rel="noopener" aria-label="음악 열기">▶</a>
+      </section>
+    </aside>
+
+    <!-- ── 본문 ─────────────────────────────────────── -->
+    <main class="main">
+
+      <nav class="tabs" id="tabs" role="tablist" aria-label="섹션">
+        <button class="tab" role="tab" id="tab-home"      aria-controls="home"      data-tab="home">홈</button>
+        <button class="tab" role="tab" id="tab-schedule"  aria-controls="schedule"  data-tab="schedule">일정</button>
+        <button class="tab" role="tab" id="tab-notices"   aria-controls="notices"   data-tab="notices">공지</button>
+        <button class="tab" role="tab" id="tab-resources" aria-controls="resources" data-tab="resources">자료</button>
+        <button class="tab" role="tab" id="tab-cast"      aria-controls="cast"      data-tab="cast">인물</button>
+        <button class="tab" role="tab" id="tab-records"   aria-controls="records"   data-tab="records">기록</button>
+        <button class="tab" role="tab" id="tab-gallery"   aria-controls="gallery"   data-tab="gallery">갤러리</button>
+      </nav>
+
+      <!-- 홈 -->
+      <section class="panel card" id="home" role="tabpanel" aria-labelledby="tab-home" tabindex="-1">
+        <img id="mainImage" class="main-art" src="assets/images/main.png" alt="">
+        <div class="dash">
+          <section>
+            <p class="eyebrow">다음 일정</p>
+            <div id="dashSchedule" class="dash-body"><p class="loading">불러오는 중</p></div>
+          </section>
+          <section>
+            <p class="eyebrow">최근 공지</p>
+            <div id="dashNotices" class="dash-body"><p class="loading">불러오는 중</p></div>
+          </section>
+          <section>
+            <p class="eyebrow">새 자료</p>
+            <div id="dashResources" class="dash-body"><p class="loading">불러오는 중</p></div>
+          </section>
+        </div>
+      </section>
+
+      <!-- 일정 -->
+      <section class="panel card" id="schedule" role="tabpanel" aria-labelledby="tab-schedule" tabindex="-1" hidden>
+        <div class="head">
+          <p class="eyebrow">SESSION SCHEDULE</p>
+          <h2>진행 일정</h2>
+        </div>
+        <h3 class="subhead">예정</h3>
+        <div id="scheduleUpcoming" class="timeline"><p class="loading">불러오는 중</p></div>
+        <h3 class="subhead">지난 일정</h3>
+        <div id="schedulePast" class="timeline is-past"></div>
+      </section>
+
+      <!-- 공지 -->
+      <section class="panel card" id="notices" role="tabpanel" aria-labelledby="tab-notices" tabindex="-1" hidden>
+        <div class="head">
+          <p class="eyebrow">NOTICE</p>
+          <h2>공지사항</h2>
+        </div>
+        <div id="noticeList" class="stack"><p class="loading">불러오는 중</p></div>
+      </section>
+
+      <!-- 자료 (시트 + 핸드아웃 통합) -->
+      <section class="panel card" id="resources" role="tabpanel" aria-labelledby="tab-resources" tabindex="-1" hidden>
+        <div class="head">
+          <p class="eyebrow">SHEETS &amp; HANDOUTS</p>
+          <h2>자료</h2>
+        </div>
+        <div class="toolbar">
+          <div class="segmented" id="resourceSeg" role="group" aria-label="자료 종류">
+            <button class="seg is-on" data-kind="all">전체</button>
+            <button class="seg" data-kind="sheet">시트</button>
+            <button class="seg" data-kind="handout">핸드아웃</button>
+          </div>
+          <label class="search">
+            <span class="sr-only">자료 검색</span>
+            <input type="search" id="resourceSearch" placeholder="제목·설명으로 찾기" autocomplete="off">
+          </label>
+        </div>
+        <div id="resourceGrid" class="grid"><p class="loading">불러오는 중</p></div>
+      </section>
+
+      <!-- 인물 -->
+      <section class="panel card" id="cast" role="tabpanel" aria-labelledby="tab-cast" tabindex="-1" hidden>
+        <div class="head">
+          <p class="eyebrow">CAST</p>
+          <h2>등장인물</h2>
+        </div>
+        <h3 class="subhead">플레이어 캐릭터</h3>
+        <div id="characterList" class="stack lg"><p class="loading">불러오는 중</p></div>
+        <h3 class="subhead">관계 인물</h3>
+        <div id="npcGrid" class="npc-grid"></div>
+      </section>
+
+      <!-- 기록 -->
+      <section class="panel card" id="records" role="tabpanel" aria-labelledby="tab-records" tabindex="-1" hidden>
+        <div class="head">
+          <p class="eyebrow">SESSION ARCHIVE</p>
+          <h2>세션 기록</h2>
+        </div>
+        <div class="toolbar">
+          <label class="search">
+            <span class="sr-only">기록 검색</span>
+            <input type="search" id="recordSearch" placeholder="회차·제목·요약으로 찾기" autocomplete="off">
+          </label>
+        </div>
+        <div id="recordList" class="stack"><p class="loading">불러오는 중</p></div>
+      </section>
+
+      <!-- 갤러리 -->
+      <section class="panel card" id="gallery" role="tabpanel" aria-labelledby="tab-gallery" tabindex="-1" hidden>
+        <div class="head">
+          <p class="eyebrow">GALLERY</p>
+          <h2>갤러리</h2>
+        </div>
+        <div id="galleryGrid" class="gallery-grid"><p class="loading">불러오는 중</p></div>
+      </section>
+
+    </main>
   </div>
 
-  <dialog id="lightbox" class="lightbox">
-    <button id="lightboxClose" aria-label="닫기">✕</button>
-    <img id="lightboxImage" alt="갤러리 이미지">
-    <p id="lightboxCredit"></p>
-  </dialog>
+  <footer class="site-footer" id="footerText">© 2026 TRPG_TEAM.</footer>
+</div>
 
-  <script src="assets/js/site.js" defer></script>
+<!-- ── 라이트박스 ────────────────────────────────────── -->
+<dialog id="lightbox" class="lightbox" aria-label="이미지 보기">
+  <button class="lb-btn lb-close" id="lbClose" aria-label="닫기">✕</button>
+  <button class="lb-btn lb-prev"  id="lbPrev"  aria-label="이전 이미지">‹</button>
+  <img id="lbImage" alt="">
+  <button class="lb-btn lb-next"  id="lbNext"  aria-label="다음 이미지">›</button>
+  <p class="lb-caption"><span id="lbCredit"></span><span class="lb-count mono" id="lbCount"></span></p>
+</dialog>
+
+<script src="assets/js/site.js" defer></script>
 </body>
 </html>
