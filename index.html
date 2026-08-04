@@ -206,5 +206,20 @@
 </dialog>
 
 <script src="assets/js/site.js" defer></script>
+
+<!-- 초대·비밀번호 재설정 메일의 링크는 사이트 첫 화면으로 들어옵니다.
+     이 조각이 없으면 링크를 눌러도 아무 일이 일어나지 않습니다. -->
+<script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+<script>
+  if (window.netlifyIdentity) {
+    window.netlifyIdentity.on('init', function (user) {
+      if (!user) {
+        window.netlifyIdentity.on('login', function () {
+          document.location.href = 'admin/';
+        });
+      }
+    });
+  }
+</script>
 </body>
 </html>
