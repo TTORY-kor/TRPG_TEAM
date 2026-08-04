@@ -2,15 +2,29 @@
   "teamName": "TRPG_TEAM",
   "title": "Character Archive",
   "description": "우리들의 세션과 캐릭터를 기록합니다.",
-  "accent": "#7ccf2d",
+  "colors": {
+    "accent": "#7ccf2d",
+    "background": "#eef1f4",
+    "card": "#ffffff",
+    "text": "#181a1e",
+    "subText": "#70757d",
+    "line": "#e5e8ec",
+    "darkCard": "#22252b",
+    "darkText": "#ffffff",
+    "heroShade": "#000000"
+  },
   "heroImage": "office.jpg",
   "profileImage": "icon.jpg",
   "profileName": "탁 이름",
   "profileSub1": "탁 소개 1",
   "profileSub2": "탁 소개 2",
   "profileSince": "since 2000.01.01",
-  "mainLinkLabel": "CCFOLIA",
-  "mainLinkUrl": "https://ccfolia.com",
+  "profileLinks": [
+    {
+      "label": "CCFOLIA",
+      "url": "https://ccfolia.com"
+    }
+  ],
   "mainImage": "main.png",
   "musicTitle": "The Legend of Ashitaka",
   "musicArtist": "Joe Hisaishi",
