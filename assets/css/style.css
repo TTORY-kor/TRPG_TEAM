@@ -1,0 +1,879 @@
+/* =========================================
+   1. 변수 및 기본 설정
+   ========================================= */
+
+/*
+   사이트 전체 색상·수치를 여기서 한 번에 관리합니다.
+   값을 바꾸면 사이트 전체에 즉시 반영됩니다.
+
+   색상 변경 팁:
+   - --accent-color  : 버튼, 강조 포인트 색 (현재 연두)
+   - --bg-color      : 페이지 배경색
+   - --text-sub      : 설명·보조 텍스트 색
+*/
+:root {
+    --bg-color      : #f0f2f5;
+    --sidebar-bg    : #ffffff;
+    --content-bg    : #ffffff;
+    --text-main     : #1a1a1a;
+    --text-sub      : #65676b;
+    --accent-color  : #7ccf2d;
+    --border-radius : 20px;
+    --shadow        : 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    display: flex;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+
+/* =========================================
+   2. 레이아웃
+   ========================================= */
+
+/* 전체 최대 너비 컨테이너 */
+.container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 1200px;
+    gap: 50px;
+    align-items: center;
+    margin-bottom: 6rem;
+}
+
+/* 헤더 배너 이미지
+   height 값을 바꾸면 배너 높이가 달라집니다 */
+.header-banner {
+    width: 100%;
+    height: 150px;
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    flex-shrink: 0;
+    margin-top: 150px;
+}
+.header-banner img { width: 100%; height: 100%; object-fit: cover; }
+
+/* 사이드바 + 메인 가로 배치 */
+.content-row {
+    display: flex;
+    width: 100%;
+    gap: 20px;
+    align-items: flex-start;
+}
+
+/* 푸터 */
+.site-footer {
+    width: 100%;
+    max-width: 1200px;
+    text-align: center;
+    font-size: 0.62rem;
+    color: var(--text-sub);
+    margin: 2rem auto;
+}
+
+
+/* =========================================
+   3. 사이드바
+   ========================================= */
+
+/* 사이드바 열 (사이드바 + 캐릭터 이미지 + 캘린더 묶음)
+   width 값을 바꾸면 사이드바 너비가 달라집니다 */
+.sidebar-column {
+    width: 320px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    position: sticky;
+    top: 20px;
+    flex-shrink: 0;
+}
+
+.sidebar {
+    width: 100%;
+    background: var(--sidebar-bg);
+    border-radius: var(--border-radius);
+    padding: 30px 20px;
+    box-shadow: var(--shadow);
+    text-align: center;
+}
+
+/* 프로필 이미지 */
+.profile-img {
+    width: 150px;
+    height: 150px;
+    border-radius: 20px;
+    object-fit: cover;
+    margin: 20px 0;
+    background-color: #ddd;
+}
+
+/* 캐릭터 이름 */
+.char-name { font-size: 1.8rem; font-weight: 700; margin-bottom: 5px; }
+
+/* 사이드바 보조 텍스트 (캠페인명, 날짜 등)
+   HTML에서 <p class="sidebar-sub"> 로 사용 */
+.sidebar-sub { font-size: 0.9rem; color: var(--text-sub); margin-bottom: 5px; }
+
+/* 아래 여백을 더 두고 싶을 때
+   HTML에서 class="sidebar-sub sidebar-sub--spaced" 로 사용 */
+.sidebar-sub--spaced { margin-bottom: 35px; }
+
+/* 뮤직 플레이어 */
+.music-player {
+    background: rgba(0, 0, 0, 0.85);
+    color: white;
+    padding: 15px;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    text-align: left;
+    overflow: hidden;
+}
+.youtube-thumb {
+    position: relative;
+    width: 80px;
+    height: 60px;
+    border-radius: 8px;
+    overflow: hidden;
+    flex-shrink: 0;
+    display: block;
+}
+.youtube-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.play-icon {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0,0,0,0.4);
+    color: white;
+    font-size: 1.2rem;
+}
+.music-info  { flex-grow: 1; overflow: hidden; }
+.music-title { font-weight: bold; font-size: 0.9rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.music-artist { color: #aaa; font-size: 0.8rem; }
+
+/* 링크 버튼
+   사용법: <a href="링크" class="link-btn">텍스트</a> */
+.link-btn {
+    display: inline-block;
+    padding: 10px 28px;
+    margin-bottom: 1rem;
+    background-color: var(--accent-color);
+    color: #ffffff;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: filter 0.2s;
+}
+.link-btn:hover { filter: brightness(1.15); }
+
+/* 캐릭터 이미지 목록 */
+.character-section {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.character-img {
+    width: 100%;
+    height: 70px;
+    object-fit: cover;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease;
+    display: block;
+    cursor: pointer;
+}
+.character-img:hover { transform: scale(1.02); }
+
+
+/* =========================================
+   캘린더
+   ========================================= */
+
+.calendar {
+    width: 100%;
+    background: rgba(30, 30, 30, 0.72);
+    backdrop-filter: blur(6px);
+    border-radius: 14px;
+    padding: 16px;
+    color: #ffffff;
+    font-size: 0.85rem;
+    box-sizing: border-box;
+}
+
+.cal-header { text-align: center; margin-bottom: 10px; }
+.cal-year {
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.55);
+    margin-bottom: 2px;
+}
+.cal-nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+}
+.cal-nav button {
+    background: none;
+    border: none;
+    color: #ffffff;
+    font-size: 1.1rem;
+    cursor: pointer;
+    padding: 0 4px;
+    line-height: 1;
+    opacity: 0.8;
+    transition: opacity 0.2s;
+}
+.cal-nav button:hover { opacity: 1; }
+.cal-month { font-size: 1.6rem; font-weight: 700; }
+
+.cal-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 2px;
+    text-align: center;
+}
+.cal-dow {
+    font-size: 0.72rem;
+    color: rgba(255, 255, 255, 0.5);
+    padding-bottom: 6px;
+}
+.cal-day {
+    position: relative;
+    padding: 5px 2px;
+    border-radius: 6px;
+    cursor: default;
+    line-height: 1.2;
+}
+.cal-day.today {
+    background: var(--accent-color);
+    font-weight: 700;
+    border-radius: 50%;
+}
+.cal-day.has-event { cursor: pointer; }
+.cal-day.has-event::after {
+    content: '';
+    display: block;
+    width: 4px;
+    height: 4px;
+    background: var(--accent-color);
+    border-radius: 50%;
+    margin: 2px auto 0;
+}
+.cal-day.today.has-event::after { background: #ffffff; }
+
+/* 일정 툴팁 */
+.cal-day .cal-tooltip {
+    display: none;
+    position: absolute;
+    bottom: calc(100% + 6px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(20, 20, 20, 0.92);
+    color: #fff;
+    font-size: 0.72rem;
+    white-space: nowrap;
+    padding: 5px 9px;
+    border-radius: 6px;
+    z-index: 10;
+    line-height: 1.5;
+    pointer-events: none;
+}
+.cal-day:hover .cal-tooltip { display: block; }
+
+
+/* =========================================
+   4. 메인 콘텐츠
+   ========================================= */
+
+.main-content {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* 탭 네비게이션 버튼 */
+.nav-tabs { display: flex; gap: 10px; }
+.nav-btn {
+    background: transparent;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-sub);
+    cursor: pointer;
+    border-radius: 20px;
+    transition: all 0.3s;
+}
+.nav-btn:hover  { background: rgba(0, 0, 0, 0.05); }
+.nav-btn.active { background: var(--accent-color); color: white; }
+
+/* 콘텐츠 카드 (각 탭의 본문 영역)
+   padding 좌우 값(80px)을 줄이면 텍스트 여백이 줄어듭니다 */
+.content-card {
+    background: var(--content-bg);
+    padding: 40px 80px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    margin-bottom: 20px;
+    display: none;
+    animation: fadeIn 0.3s ease-in-out;
+}
+.content-card.active { display: block; }
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(5px); }
+    to   { opacity: 1; transform: translateY(0);   }
+}
+
+h2 { font-size: 1.5rem; margin-bottom: 25px; color: var(--text-main); }
+
+/* 섹션 도입부 텍스트
+   HTML에서 <p class="section-intro"> 로 사용 */
+.section-intro { color: var(--text-sub); margin-bottom: 20px; }
+
+/* 구분 점 (• • •) */
+.divider-dots {
+    text-align: center;
+    color: #c4c4c4;
+    font-size: 0.65rem;
+    letter-spacing: 12px;
+    margin: 40px 0;
+    user-select: none;
+}
+
+
+/* =========================================
+   5. 캐릭터 상세
+   ========================================= */
+
+.profile-overview {
+    display: flex;
+    gap: 60px;
+    align-items: flex-start;
+    margin-bottom: 30px;
+}
+
+.main-profile-img {
+    width: 300px;
+    height: auto;
+    border-radius: 15px;
+    margin-top: 20px;
+    flex-shrink: 0;
+    display: block;
+}
+
+.profile-info-wrapper {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* 인용구 블록 */
+.char-quote {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 30px;
+    width: 100%;
+}
+
+/* 큰따옴표 기호
+   색상은 HTML에서 style="color: ..." 로 캐릭터별로 지정 */
+.quote-mark {
+    font-size: 3rem;
+    line-height: 1;
+    font-family: serif;
+    font-weight: bold;
+    margin-bottom: -10px;
+}
+.quote-text {
+    font-family: 'Nanum Myeongjo', serif;
+    font-style: italic;
+    font-size: 1.2rem;
+    font-weight: 500;
+    line-height: 1.6;
+    color: var(--text-main);
+    text-align: center;
+    word-break: keep-all;
+}
+
+/* 기본 정보 테이블 */
+.info-table {
+    width: 100%;
+    margin-bottom: 1rem;
+}
+.info-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 15px 0;
+    border-bottom: 1px solid #eee;
+}
+.info-row:last-child { border-bottom: none; }
+.info-label { font-weight: 600; color: var(--text-main); }
+.info-value  { color: var(--text-sub); }
+
+
+/* =========================================
+   6. 스탯 그래프
+   ========================================= */
+
+.stats-wrapper {
+    display: flex;
+    gap: 60px;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+/* 레이더 차트 */
+.radar-chart-container {
+    width: 300px;
+    height: 300px;
+    flex-shrink: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.radar-chart { width: 100%; height: 100%; overflow: visible; }
+
+.grid-line       { fill: none; stroke: #eee; stroke-width: 1;   }
+.grid-line-outer { fill: none; stroke: #ddd; stroke-width: 1.5; }
+.axis-line       { stroke: #f5f5f5; stroke-width: 1;            }
+.data-area       { stroke-width: 1; transition: all 0.5s ease;  }
+.chart-label {
+    font-size: 0.5rem;
+    fill: var(--text-sub);
+    font-weight: 600;
+    text-anchor: middle;
+    dominant-baseline: middle;
+}
+
+/* 레이더 차트 꼭짓점 툴팁 */
+.tooltip-bg { fill: rgba(30, 30, 30, 0.82); }
+.tooltip-text {
+    font-size: 0.42rem;
+    fill: #ffffff;
+    text-anchor: middle;
+    dominant-baseline: middle;
+    pointer-events: none;
+}
+.chart-dot-hit { cursor: crosshair; }
+
+/* 성격 바 그래프
+   --bar-color : HTML stat-group 요소에서 style="--bar-color: 색상;" 으로 지정
+   캐릭터마다 다른 색을 주려면 stat-group 의 --bar-color 값만 바꾸면 됩니다 */
+.stat-group {
+    flex-grow: 1;
+    max-width: 40%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+.stat-item { width: 100%; }
+.stat-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+    font-size: 0.9rem;
+}
+.stat-bar-bg {
+    width: 100%;
+    height: 8px;
+    background-color: #eee;
+    border-radius: 4px;
+    overflow: hidden;
+}
+/* 바 색상 — 부모 stat-group 의 --bar-color 를 상속
+   미지정 시 --accent-color 로 폴백 */
+.stat-bar-fill {
+    height: 100%;
+    border-radius: 4px;
+    background-color: var(--bar-color, var(--accent-color));
+}
+
+
+/* =========================================
+   7. 접기/펼치기
+   ========================================= */
+
+details {
+    background: #f9f9f9;
+    border-radius: 12px;
+    padding: 15px;
+    margin-bottom: 15px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+details:hover { background: #f0f0f0; }
+
+summary {
+    font-weight: 600;
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+summary::after              { content: '+'; font-size: 1.2rem; }
+details[open] summary::after { content: '−'; }
+
+/* 로그 컨테이너 */
+.details-content {
+    margin-top: 15px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    color: var(--text-sub);
+    line-height: 1.6;
+    font-size: 0.95rem;
+}
+
+/* 개별 로그 아이템 */
+.log-item {
+    display: flex;
+    flex-direction: column;
+    padding: 8px 0;
+    border-bottom: 1px solid #e8e8e8;
+}
+.log-item:last-child { border-bottom: none; }
+
+/* 발화자 이름 (색상은 JS charColors에서 지정) */
+.log-name {
+    font-size: 0.85rem;
+    margin-bottom: 4px;
+    font-weight: 600;
+    letter-spacing: 0.05rem;
+}
+
+/* 대사 본문*/
+.msg-text {
+    color: #2e2e2e;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    word-break: break-all;
+}
+
+/* 다이스롤 결과 서식
+   결과 5종: 대성공 / 어려운 성공 / 보통 성공 / 실패 / 대실패
+   색상을 바꾸려면 아래 각 클래스의 값만 수정하세요. */
+.dice-roll {
+    display: inline-block;
+    font-family: 'Consolas', 'Menlo', monospace;
+    font-size: 0.82rem;
+    line-height: 1.55;
+    padding: 7px 11px;
+    border-radius: 8px;
+    background: #7a7a7a;   
+    color: #ffffff;        
+    word-break: break-all;
+}
+.dice-critical { background: #2e9b3e; } /* 대성공 */
+.dice-hard     { background: #3b7ddb; } /* 어려운 성공 */
+.dice-success  { background: #6b8cc7; } /* 보통 성공 */
+.dice-failure  { background: #d0574f; } /* 실패 */
+.dice-fumble   { background: #b31d1d; } /* 대실패 */
+
+
+/* =========================================
+   8. NPC 관계 카드
+   ========================================= */
+
+/* 카드 그리드
+   minmax 첫 번째 값(200px)을 줄이면 한 줄에 카드가 더 많이 들어갑니다 */
+.relation-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.relation-card {
+    background: #f9f9f9;
+    padding: 20px;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    position: relative;
+}
+
+/* 관계 배지 (JS buildRelationBadges 가 자동 생성)
+   data-relation="적|아군|중립|의뢰인" 값에 따라 색상이 달라집니다 */
+.relation-badge {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 20px;
+    letter-spacing: 0.03em;
+}
+
+.relation-avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: #ddd;
+    margin-bottom: 10px;
+    object-fit: cover;
+}
+.relation-name { font-weight: 700; margin-bottom: 5px; }
+.relation-desc { font-size: 0.8rem; color: var(--text-sub); }
+
+
+/* =========================================
+   8-2. Gallery
+   ========================================= */
+
+/* 갤러리 그리드 — 한 줄에 3개, 1:1 정사각형 썸네일
+   한 줄에 들어가는 개수를 바꾸려면 repeat(3, 1fr) 의 숫자만 수정하세요 */
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+}
+
+.gallery-item {
+    aspect-ratio: 1 / 1;
+    border-radius: 14px;
+    overflow: hidden;
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+.gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.25s ease;
+}
+.gallery-item:hover img { transform: scale(1.06); }
+
+.lightbox-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    background: rgba(0, 0, 0, 0.8);
+    justify-content: center;
+    align-items: center;
+    padding: 60px 24px;      
+}
+.lightbox-overlay.active { display: flex; }
+
+/* 이미지 + 크레딧을 감싸는 래퍼 */
+.lightbox-content {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 92vw;
+}
+
+/* 전체 이미지
+   max-width/max-height : 팝업 이미지의 최대 크기(화면 대비 비율).
+   값을 더 줄이면 이미지가 더 작게 뜹니다. */
+.lightbox-img {
+    max-width: 82vw;
+    max-height: 72vh;
+    object-fit: contain;
+    border-radius: 10px;
+    display: block;
+}
+
+/* 아티스트 크레딧 */
+.lightbox-credit {
+    margin-top: 10px;
+    color: rgba(255, 255, 255, 0.82);
+    font-size: 0.8rem;
+    text-align: center;
+    letter-spacing: 0.02em;
+    word-break: keep-all;
+}
+
+/* 닫기 버튼 */
+.lightbox-close {
+    position: absolute;
+    top: -38px;
+    right: 0;
+    width: 32px;
+    height: 32px;
+    background: none;
+    border: none;
+    color: #ffffff;
+    font-size: 1.4rem;
+    line-height: 1;
+    cursor: pointer;
+    opacity: 0.85;
+    transition: opacity 0.2s;
+}
+.lightbox-close:hover { opacity: 1; }
+
+
+/* =========================================
+   9. 반응형 (모바일)
+   ========================================= */
+
+/* 토글 버튼 & 오버레이 */
+.sidebar-toggle  { display: none; }
+.sidebar-overlay { display: none; }
+
+@media (max-width: 768px) {
+
+    body {
+        padding: 0;
+        align-items: flex-start;
+    }
+
+    .container {
+        gap: 16px;
+        padding: 0 16px;
+        margin-top: 24px;
+        margin-bottom: 3rem;
+        align-items: stretch;
+    }
+
+    .header-banner {
+        height: 110px;
+        margin-top: 16px;
+        border-radius: 14px;
+    }
+
+    /* 사이드바 토글 버튼 */
+    .sidebar-toggle {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: fixed;
+        bottom: 24px;
+        left: 16px;
+        z-index: 200;
+        width: 40px;
+        height: 40px;
+        border-radius: 10px;
+        border: none;
+        background: var(--accent-color);
+        color: #fff;
+        font-size: 1.2rem;
+        cursor: pointer;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+    }
+
+    /* 뒷배경 오버레이 */
+    .sidebar-overlay {
+        display: block;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.35);
+        z-index: 150;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s;
+    }
+    .sidebar-overlay.active {
+        opacity: 1;
+        pointer-events: auto;
+    }
+
+    /* 사이드바 */
+    .sidebar-column {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 300px;
+        height: 100dvh;
+        overflow-y: auto;
+        z-index: 160;
+        background: var(--bg-color);
+        padding: 24px 16px 40px;
+        gap: 14px;
+        display: flex;
+        flex-direction: column;
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+        box-shadow: 4px 0 20px rgba(0, 0, 0, 0.12);
+    }
+    .sidebar-column.open { transform: translateX(0); }
+
+    .sidebar      { padding: 24px 20px; border-radius: 16px; }
+    .profile-img  { width: 100px; height: 100px; margin: 14px 0 10px; }
+    .char-name    { font-size: 1.4rem; }
+    .sidebar-sub  { font-size: 0.82rem; }
+
+    .music-player  { padding: 12px; gap: 10px; }
+    .youtube-thumb { width: 64px; height: 48px; }
+    .music-title   { font-size: 0.82rem; }
+
+    /* 캐릭터 이미지 */
+    .character-section { flex-direction: column; gap: 8px; }
+    .character-img     { width: 100%; height: 70px; border-radius: 8px; object-fit: cover; }
+
+    /* 캘린더 */
+    .calendar   { max-width: 280px; margin: 0 auto; border-radius: 16px; font-size: 0.8rem; }
+    .cal-month  { font-size: 1.3rem; }
+
+    /* 메인 콘텐츠 */
+    .content-row  { flex-direction: column; align-items: stretch; gap: 14px; }
+    .main-content { width: 100%; }
+
+    .content-card { padding: 24px 18px; border-radius: 16px; margin-bottom: 0; }
+
+    h2 { font-size: 1.2rem; margin-bottom: 18px; }
+
+    .profile-overview  { flex-direction: column; align-items: center; gap: 16px; }
+    .main-profile-img  { width: 100%; max-width: 240px; margin-top: 0; }
+    .quote-text        { font-size: 1rem; }
+    .quote-mark        { font-size: 2.2rem; }
+
+    .info-row { padding: 11px 0; font-size: 0.88rem; }
+
+    .stats-wrapper         { flex-direction: column; gap: 24px; }
+    .radar-chart-container { width: 220px; height: 220px; max-width: 100%; margin: 0 auto; }
+    .stat-group            { max-width: 100%; width: 100%; gap: 14px; }
+    .stat-header           { font-size: 0.82rem; }
+
+    .divider-dots { margin: 24px 0; }
+
+    details          { padding: 12px 14px; }
+    .details-content { padding: 12px 4px; font-size: 0.88rem; }
+
+    .relation-grid   { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    .relation-card   { padding: 14px 10px; border-radius: 12px; }
+    .relation-avatar { width: 48px; height: 48px; }
+    .relation-name   { font-size: 0.88rem; }
+    .relation-desc   { font-size: 0.75rem; }
+
+    .gallery-grid { grid-template-columns: 1fr; gap: 10px; }
+
+    .lightbox-overlay { padding: 50px 16px; }
+    .lightbox-close   { top: -34px; }
+
+    .nav-tabs { width: 100%; justify-content: flex-start; flex-wrap: wrap; gap: 6px; }
+    .nav-btn  { padding: 7px 14px; font-size: 0.85rem; }
+
+    .site-footer { margin: 1.5rem auto; }
+}
