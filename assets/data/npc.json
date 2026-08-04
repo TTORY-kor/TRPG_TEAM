@@ -1,0 +1,22 @@
+{
+  "items": [
+    {
+      "name": "적 예시",
+      "relation": "적",
+      "image": "npc-enemy.jpg",
+      "description": "설명 예시"
+    },
+    {
+      "name": "의뢰인 예시",
+      "relation": "의뢰인",
+      "image": "npc-client.jpg",
+      "description": "설명 예시"
+    },
+    {
+      "name": "중립 예시",
+      "relation": "중립",
+      "image": "npc-neutral.jpg",
+      "description": "설명 예시"
+    }
+  ]
+}

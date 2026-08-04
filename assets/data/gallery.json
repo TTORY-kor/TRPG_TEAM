@@ -1,0 +1,16 @@
+{
+  "items": [
+    {
+      "image": "gallery1.jpg",
+      "credit": "Artist : 아티스트 이름"
+    },
+    {
+      "image": "gallery2.jpg",
+      "credit": "Artist : 아티스트 이름"
+    },
+    {
+      "image": "gallery3.jpg",
+      "credit": "Artist : 아티스트 이름"
+    }
+  ]
+}
