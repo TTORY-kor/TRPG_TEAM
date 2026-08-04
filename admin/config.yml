@@ -5,8 +5,8 @@ backend:
 locale: ko
 media_folder: "assets/images"
 public_folder: "/assets/images"
-site_url: "/"
-display_url: "/"
+site_url: "https://trpg-team.netlify.app"
+display_url: "https://trpg-team.netlify.app"
 logo_url: "/assets/images/icon.jpg"
 
 collections:
@@ -14,7 +14,7 @@ collections:
     label: "사이트 설정"
     files:
       - name: "site"
-        label: "기본 설정 · 색상 · 링크"
+        label: "기본 설정과 테마"
         file: "assets/data/site.json"
         format: "json"
         fields:
@@ -39,8 +39,8 @@ collections:
           - {label: "프로필 이름", name: "profileName", widget: "string"}
           - {label: "소개 1", name: "profileSub1", widget: "string", required: false}
           - {label: "소개 2", name: "profileSub2", widget: "string", required: false}
-          - {label: "Since 문구", name: "profileSince", widget: "string", required: false}
-          - label: "프로필 링크"
+          - {label: "진행 기간 문구", name: "profileSince", widget: "string", required: false}
+          - label: "주요 링크"
             name: "profileLinks"
             widget: "list"
             summary: "{{fields.label}}"
@@ -51,13 +51,102 @@ collections:
           - {label: "음악 제목", name: "musicTitle", widget: "string", required: false}
           - {label: "아티스트", name: "musicArtist", widget: "string", required: false}
           - {label: "YouTube 영상 ID", name: "musicYoutubeId", widget: "string", required: false}
-          - {label: "푸터", name: "footer", widget: "string", required: false}
+          - {label: "하단 문구", name: "footer", widget: "string", required: false}
+
+  - name: "schedules"
+    label: "진행 일정"
+    files:
+      - name: "schedules"
+        label: "일정 목록"
+        file: "assets/data/schedules.json"
+        format: "json"
+        fields:
+          - label: "일정"
+            name: "items"
+            widget: "list"
+            root: true
+            summary: "{{fields.date}} · {{fields.title}}"
+            fields:
+              - {label: "날짜", name: "date", widget: "datetime", date_format: "YYYY-MM-DD", time_format: false, format: "YYYY-MM-DD"}
+              - {label: "시간", name: "time", widget: "string", required: false}
+              - {label: "제목", name: "title", widget: "string"}
+              - {label: "설명", name: "description", widget: "text", required: false}
+              - {label: "장소", name: "location", widget: "string", required: false}
+              - {label: "관련 주소", name: "url", widget: "string", required: false}
+              - {label: "공개 상태", name: "status", widget: "select", options: ["공개", "비공개"], default: "공개"}
+
+  - name: "notices"
+    label: "공지사항"
+    files:
+      - name: "notices"
+        label: "공지 목록"
+        file: "assets/data/notices.json"
+        format: "json"
+        fields:
+          - label: "공지"
+            name: "items"
+            widget: "list"
+            root: true
+            summary: "{{fields.date}} · {{fields.title}}"
+            fields:
+              - {label: "날짜", name: "date", widget: "datetime", date_format: "YYYY-MM-DD", time_format: false, format: "YYYY-MM-DD"}
+              - {label: "제목", name: "title", widget: "string"}
+              - {label: "내용", name: "content", widget: "text"}
+              - {label: "관련 주소", name: "url", widget: "string", required: false}
+              - {label: "상단 고정", name: "pinned", widget: "boolean", default: false}
+              - {label: "공개 상태", name: "status", widget: "select", options: ["공개", "비공개"], default: "공개"}
+
+  - name: "sheets"
+    label: "시트"
+    files:
+      - name: "sheets"
+        label: "시트 게시 목록"
+        file: "assets/data/sheets.json"
+        format: "json"
+        fields:
+          - label: "시트"
+            name: "items"
+            widget: "list"
+            root: true
+            summary: "{{fields.title}}"
+            fields:
+              - {label: "제목", name: "title", widget: "string"}
+              - {label: "담당/소유자", name: "owner", widget: "string", required: false}
+              - {label: "설명", name: "description", widget: "text", required: false}
+              - {label: "대표 이미지", name: "image", widget: "image", required: false}
+              - {label: "시트 주소", name: "url", widget: "string", required: false}
+              - {label: "메모", name: "content", widget: "text", required: false}
+              - {label: "공개 상태", name: "status", widget: "select", options: ["공개", "잠금", "비공개"], default: "공개"}
+
+  - name: "handouts"
+    label: "핸드아웃"
+    files:
+      - name: "handouts"
+        label: "핸드아웃 목록"
+        file: "assets/data/handouts.json"
+        format: "json"
+        fields:
+          - label: "핸드아웃"
+            name: "items"
+            widget: "list"
+            root: true
+            summary: "{{fields.title}} · {{fields.status}}"
+            fields:
+              - {label: "제목", name: "title", widget: "string"}
+              - {label: "등록일", name: "date", widget: "datetime", date_format: "YYYY-MM-DD", time_format: false, format: "YYYY-MM-DD", required: false}
+              - {label: "분류", name: "category", widget: "string", required: false}
+              - {label: "설명", name: "description", widget: "text", required: false}
+              - {label: "대표 이미지", name: "image", widget: "image", required: false}
+              - {label: "첨부 파일", name: "file", widget: "file", required: false}
+              - {label: "외부 주소", name: "url", widget: "string", required: false}
+              - {label: "본문", name: "content", widget: "text", required: false}
+              - {label: "공개 상태", name: "status", widget: "select", options: ["공개", "잠금", "비공개"], default: "공개"}
 
   - name: "characters"
-    label: "캐릭터"
+    label: "등장인물"
     files:
       - name: "characters"
-        label: "캐릭터 목록"
+        label: "플레이어 캐릭터"
         file: "assets/data/characters.json"
         format: "json"
         fields:
@@ -67,7 +156,7 @@ collections:
             root: true
             summary: "{{fields.name}}"
             fields:
-              - {label: "ID", name: "id", widget: "string", hint: "영문·숫자 권장"}
+              - {label: "ID", name: "id", widget: "string"}
               - {label: "이름", name: "name", widget: "string"}
               - {label: "배너", name: "banner", widget: "image"}
               - {label: "스탠딩", name: "standing", widget: "image"}
@@ -76,35 +165,20 @@ collections:
               - {label: "직업", name: "job", widget: "string", required: false}
               - {label: "나이", name: "age", widget: "string", required: false}
               - {label: "거주지", name: "location", widget: "string", required: false}
-              - label: "스탯 8개"
-                name: "stats"
-                widget: "list"
-                min: 8
-                max: 8
-                field: {label: "수치", name: "value", widget: "number", min: 0, max: 100}
-              - label: "성격 수치 4개"
-                name: "personality"
-                widget: "list"
-                min: 4
-                max: 4
-                field: {label: "수치", name: "value", widget: "number", min: 0, max: 100}
-              - label: "백스토리"
+              - label: "소개 항목"
                 name: "story"
                 widget: "list"
                 required: false
                 fields:
                   - {label: "제목", name: "title", widget: "string"}
                   - {label: "내용", name: "content", widget: "text"}
-
-  - name: "npc"
-    label: "NPC"
-    files:
+              - {label: "공개 상태", name: "status", widget: "select", options: ["공개", "비공개"], default: "공개"}
       - name: "npc"
-        label: "NPC 목록"
+        label: "관계 인물"
         file: "assets/data/npc.json"
         format: "json"
         fields:
-          - label: "NPC"
+          - label: "인물"
             name: "items"
             widget: "list"
             root: true
@@ -114,12 +188,36 @@ collections:
               - {label: "이미지", name: "image", widget: "image"}
               - {label: "관계", name: "relation", widget: "select", options: ["적", "아군", "중립", "의뢰인"]}
               - {label: "설명", name: "description", widget: "text", required: false}
+              - {label: "공개 상태", name: "status", widget: "select", options: ["공개", "비공개"], default: "공개"}
+
+  - name: "records"
+    label: "세션 기록"
+    files:
+      - name: "records"
+        label: "기록 목록"
+        file: "assets/data/records.json"
+        format: "json"
+        fields:
+          - label: "기록"
+            name: "items"
+            widget: "list"
+            root: true
+            summary: "{{fields.session}} · {{fields.title}}"
+            fields:
+              - {label: "회차", name: "session", widget: "string", required: false}
+              - {label: "날짜", name: "date", widget: "datetime", date_format: "YYYY-MM-DD", time_format: false, format: "YYYY-MM-DD"}
+              - {label: "제목", name: "title", widget: "string"}
+              - {label: "요약", name: "summary", widget: "text", required: false}
+              - {label: "대표 이미지", name: "image", widget: "image", required: false}
+              - {label: "본문 기록", name: "content", widget: "text", required: false}
+              - {label: "로그/기록 주소", name: "url", widget: "string", required: false}
+              - {label: "공개 상태", name: "status", widget: "select", options: ["공개", "비공개"], default: "공개"}
 
   - name: "gallery"
     label: "갤러리"
     files:
       - name: "gallery"
-        label: "갤러리 이미지"
+        label: "이미지 목록"
         file: "assets/data/gallery.json"
         format: "json"
         fields:
@@ -131,38 +229,4 @@ collections:
             fields:
               - {label: "이미지", name: "image", widget: "image"}
               - {label: "크레딧", name: "credit", widget: "string", required: false}
-
-  - name: "events"
-    label: "캘린더"
-    files:
-      - name: "events"
-        label: "일정"
-        file: "assets/data/events.json"
-        format: "json"
-        fields:
-          - label: "일정"
-            name: "items"
-            widget: "list"
-            root: true
-            summary: "{{fields.date}} · {{fields.title}}"
-            fields:
-              - {label: "날짜", name: "date", widget: "datetime", date_format: "YYYY-MM-DD", time_format: false, format: "YYYY-MM-DD"}
-              - {label: "일정명", name: "title", widget: "string"}
-              - {label: "시간", name: "time", widget: "string", required: false}
-
-  - name: "backup"
-    label: "백업 로그"
-    files:
-      - name: "backup"
-        label: "로그 목록"
-        file: "assets/data/backup.json"
-        format: "json"
-        fields:
-          - label: "로그"
-            name: "items"
-            widget: "list"
-            root: true
-            summary: "{{fields.title}}"
-            fields:
-              - {label: "제목", name: "title", widget: "string"}
-              - {label: "내용", name: "content", widget: "text"}
+              - {label: "공개 상태", name: "status", widget: "select", options: ["공개", "비공개"], default: "공개"}
