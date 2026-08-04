@@ -1,0 +1,168 @@
+backend:
+  name: git-gateway
+  branch: main
+
+locale: ko
+media_folder: "assets/images"
+public_folder: "/assets/images"
+site_url: "/"
+display_url: "/"
+logo_url: "/assets/images/icon.jpg"
+
+collections:
+  - name: "site"
+    label: "사이트 설정"
+    files:
+      - name: "site"
+        label: "기본 설정 · 색상 · 링크"
+        file: "assets/data/site.json"
+        format: "json"
+        fields:
+          - {label: "팀 이름", name: "teamName", widget: "string"}
+          - {label: "메인 제목", name: "title", widget: "string"}
+          - {label: "소개 문구", name: "description", widget: "text"}
+          - label: "전체 색상"
+            name: "colors"
+            widget: "object"
+            fields:
+              - {label: "강조색", name: "accent", widget: "color", allowInput: true}
+              - {label: "페이지 배경", name: "background", widget: "color", allowInput: true}
+              - {label: "카드 배경", name: "card", widget: "color", allowInput: true}
+              - {label: "기본 글자", name: "text", widget: "color", allowInput: true}
+              - {label: "보조 글자", name: "subText", widget: "color", allowInput: true}
+              - {label: "구분선", name: "line", widget: "color", allowInput: true}
+              - {label: "어두운 카드", name: "darkCard", widget: "color", allowInput: true}
+              - {label: "어두운 카드 글자", name: "darkText", widget: "color", allowInput: true}
+              - {label: "배너 음영", name: "heroShade", widget: "color", allowInput: true}
+          - {label: "헤더 이미지", name: "heroImage", widget: "image"}
+          - {label: "프로필 이미지", name: "profileImage", widget: "image"}
+          - {label: "프로필 이름", name: "profileName", widget: "string"}
+          - {label: "소개 1", name: "profileSub1", widget: "string", required: false}
+          - {label: "소개 2", name: "profileSub2", widget: "string", required: false}
+          - {label: "Since 문구", name: "profileSince", widget: "string", required: false}
+          - label: "프로필 링크"
+            name: "profileLinks"
+            widget: "list"
+            summary: "{{fields.label}}"
+            fields:
+              - {label: "링크 이름", name: "label", widget: "string"}
+              - {label: "주소", name: "url", widget: "string"}
+          - {label: "메인 일러스트", name: "mainImage", widget: "image"}
+          - {label: "음악 제목", name: "musicTitle", widget: "string", required: false}
+          - {label: "아티스트", name: "musicArtist", widget: "string", required: false}
+          - {label: "YouTube 영상 ID", name: "musicYoutubeId", widget: "string", required: false}
+          - {label: "푸터", name: "footer", widget: "string", required: false}
+
+  - name: "characters"
+    label: "캐릭터"
+    files:
+      - name: "characters"
+        label: "캐릭터 목록"
+        file: "assets/data/characters.json"
+        format: "json"
+        fields:
+          - label: "캐릭터"
+            name: "items"
+            widget: "list"
+            root: true
+            summary: "{{fields.name}}"
+            fields:
+              - {label: "ID", name: "id", widget: "string", hint: "영문·숫자 권장"}
+              - {label: "이름", name: "name", widget: "string"}
+              - {label: "배너", name: "banner", widget: "image"}
+              - {label: "스탠딩", name: "standing", widget: "image"}
+              - {label: "강조색", name: "accent", widget: "color", allowInput: true}
+              - {label: "한마디", name: "quote", widget: "string", required: false}
+              - {label: "직업", name: "job", widget: "string", required: false}
+              - {label: "나이", name: "age", widget: "string", required: false}
+              - {label: "거주지", name: "location", widget: "string", required: false}
+              - label: "스탯 8개"
+                name: "stats"
+                widget: "list"
+                min: 8
+                max: 8
+                field: {label: "수치", name: "value", widget: "number", min: 0, max: 100}
+              - label: "성격 수치 4개"
+                name: "personality"
+                widget: "list"
+                min: 4
+                max: 4
+                field: {label: "수치", name: "value", widget: "number", min: 0, max: 100}
+              - label: "백스토리"
+                name: "story"
+                widget: "list"
+                required: false
+                fields:
+                  - {label: "제목", name: "title", widget: "string"}
+                  - {label: "내용", name: "content", widget: "text"}
+
+  - name: "npc"
+    label: "NPC"
+    files:
+      - name: "npc"
+        label: "NPC 목록"
+        file: "assets/data/npc.json"
+        format: "json"
+        fields:
+          - label: "NPC"
+            name: "items"
+            widget: "list"
+            root: true
+            summary: "{{fields.name}}"
+            fields:
+              - {label: "이름", name: "name", widget: "string"}
+              - {label: "이미지", name: "image", widget: "image"}
+              - {label: "관계", name: "relation", widget: "select", options: ["적", "아군", "중립", "의뢰인"]}
+              - {label: "설명", name: "description", widget: "text", required: false}
+
+  - name: "gallery"
+    label: "갤러리"
+    files:
+      - name: "gallery"
+        label: "갤러리 이미지"
+        file: "assets/data/gallery.json"
+        format: "json"
+        fields:
+          - label: "이미지"
+            name: "items"
+            widget: "list"
+            root: true
+            summary: "{{fields.credit}}"
+            fields:
+              - {label: "이미지", name: "image", widget: "image"}
+              - {label: "크레딧", name: "credit", widget: "string", required: false}
+
+  - name: "events"
+    label: "캘린더"
+    files:
+      - name: "events"
+        label: "일정"
+        file: "assets/data/events.json"
+        format: "json"
+        fields:
+          - label: "일정"
+            name: "items"
+            widget: "list"
+            root: true
+            summary: "{{fields.date}} · {{fields.title}}"
+            fields:
+              - {label: "날짜", name: "date", widget: "datetime", date_format: "YYYY-MM-DD", time_format: false, format: "YYYY-MM-DD"}
+              - {label: "일정명", name: "title", widget: "string"}
+              - {label: "시간", name: "time", widget: "string", required: false}
+
+  - name: "backup"
+    label: "백업 로그"
+    files:
+      - name: "backup"
+        label: "로그 목록"
+        file: "assets/data/backup.json"
+        format: "json"
+        fields:
+          - label: "로그"
+            name: "items"
+            widget: "list"
+            root: true
+            summary: "{{fields.title}}"
+            fields:
+              - {label: "제목", name: "title", widget: "string"}
+              - {label: "내용", name: "content", widget: "text"}
