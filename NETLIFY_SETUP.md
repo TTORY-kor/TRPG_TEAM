@@ -1,3 +1,4 @@
+[Uploading NETLIFY_SETUP.md…]()
 # Netlify 설정 순서
 
 ## 1. GitHub에 파일 올리기
