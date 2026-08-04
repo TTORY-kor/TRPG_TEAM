@@ -31,6 +31,16 @@ function imageUrl(value, fallback = '') {
   return IMG + p.replace(/^\/+/, '').replace(/^assets\/images\//, '');
 }
 
+/* 관리자가 올린 첨부파일은 "/assets/files/..." 로 저장됩니다.
+   이미지와 같은 이유로 상대경로로 바꿔 어느 호스팅에서도 열리게 합니다. */
+function linkUrl(value) {
+  const p = String(value || '').trim();
+  if (!p) return '';
+  if (/^(https?:|mailto:|tel:)/.test(p) || p.startsWith('//')) return p;
+  if (p.startsWith('/')) return p.replace(/^\/+/, '');
+  return p;
+}
+
 /* 파일이 없을 때 깨진 아이콘 대신 조용히 사라지게 */
 const HIDE_ON_ERROR = `onerror="this.style.visibility='hidden'"`;
 const DROP_ON_ERROR = `onerror="this.remove()"`;
@@ -72,23 +82,55 @@ function ddayText(s) {
   return n > 0 ? `D-${n}` : `${-n}일 전`;
 }
 
+/* ── 목록 데이터 꺼내기 ────────────────────────────────
+   관리자는 목록을 {"items": [...]} 형태로 저장합니다.
+   예전 파일은 벌거벗은 배열이었으므로 양쪽 다 받습니다. */
+function asList(data) {
+  if (Array.isArray(data)) return data;
+  if (data && Array.isArray(data.items)) return data.items;
+  return [];
+}
+
 /* ── 상태 필터 ────────────────────────────────────── */
-const visible = (list = []) => list.filter(x => x && x.status !== '비공개');
+const visible = (list = []) => asList(list).filter(x => x && x.status !== '비공개');
 const isLocked = x => x.status === '잠금';
 
 /* ═══ 테마 ═══════════════════════════════════════════ */
-function paintTheme(colors = {}) {
+
+/* 관리자 > 사이트 설정 > 테마 에서 고르는 값입니다.
+   '직접 지정'을 고르면 아래 표 대신 '색상 직접 지정' 칸이 쓰입니다. */
+const PRESETS = {
+  '인디고': { accent:'#4a4f9e', background:'#eceef2', card:'#ffffff', text:'#16181f',
+             subText:'#6b7280', line:'#dde1e9', darkCard:'#1c1f2b', darkText:'#f2f3f7', heroShade:'#0a0c14' },
+  '먹빛':   { accent:'#3f4550', background:'#eeefef', card:'#ffffff', text:'#14161a',
+             subText:'#6d7278', line:'#dfe1e3', darkCard:'#191b1f', darkText:'#f4f5f6', heroShade:'#08090c' },
+  '자주':   { accent:'#8a3a5c', background:'#f2edef', card:'#ffffff', text:'#1e161a',
+             subText:'#7a6b71', line:'#e6dde1', darkCard:'#241a20', darkText:'#f7f2f4', heroShade:'#14080e' },
+  '숲':     { accent:'#2f6b52', background:'#eaefec', card:'#ffffff', text:'#141a17',
+             subText:'#68756e', line:'#d9e2dd', darkCard:'#182220', darkText:'#f1f6f3', heroShade:'#071310' },
+  '모래':   { accent:'#8a6a2f', background:'#f1eee8', card:'#ffffff', text:'#1b1811',
+             subText:'#756e60', line:'#e4ded1', darkCard:'#221e16', darkText:'#f7f4ed', heroShade:'#120e07' }
+};
+
+function paintTheme(site = {}) {
+  const preset = PRESETS[site.theme];
+  const picked = site.colors || {};
+  /* 프리셋이 있으면 프리셋, 없으면 직접 지정한 값, 그것도 비었으면 인디고 */
+  const base = preset || {};
+  const pick = key => base[key] || picked[key] || PRESETS['인디고'][key];
+
   const c = {
-    accent: colors.accent || '#4a4f9e',
-    background: colors.background || '#eceef2',
-    card: colors.card || '#ffffff',
-    text: colors.text || '#16181f',
-    subText: colors.subText || '#6b7280',
-    line: colors.line || '#dde1e9',
-    darkCard: colors.darkCard || '#1c1f2b',
-    darkText: colors.darkText || '#f2f3f7',
-    heroShade: colors.heroShade || '#0a0c14'
+    accent: pick('accent'),
+    background: pick('background'),
+    card: pick('card'),
+    text: pick('text'),
+    subText: pick('subText'),
+    line: pick('line'),
+    darkCard: pick('darkCard'),
+    darkText: pick('darkText'),
+    heroShade: pick('heroShade')
   };
+
   const css = `
 :root{
   --accent:${c.accent};
@@ -181,7 +223,7 @@ function closeSidebar() {
 
 /* ═══ 사이트 설정 ═════════════════════════════════════ */
 function renderSite(s = {}) {
-  paintTheme(s.colors);
+  paintTheme(s);
 
   const team = s.teamName || 'TRPG_TEAM';
   document.title = s.title ? `${s.title} · ${team}` : team;
@@ -213,7 +255,7 @@ function renderSite(s = {}) {
 
   $('#profileLinks').innerHTML = (s.profileLinks || [])
     .filter(l => l && l.label && l.url)
-    .map(l => `<a href="${esc(l.url)}" target="_blank" rel="noopener">${esc(l.label)}</a>`)
+    .map(l => `<a href="${esc(linkUrl(l.url))}" target="_blank" rel="noopener">${esc(l.label)}</a>`)
     .join('');
 
   /* 음악 — 내용이 없으면 빈 카드를 남기지 않고 숨깁니다 */
@@ -259,7 +301,7 @@ function renderSchedules(items = []) {
         <h3>${esc(x.title || '제목 없음')}</h3>
         ${x.description ? `<p class="body-text">${esc(x.description)}</p>` : ''}
         ${x.location ? `<small class="tl-meta">장소 · ${esc(x.location)}</small>` : ''}
-        ${x.url ? `<a class="link" href="${esc(x.url)}" target="_blank" rel="noopener">관련 링크</a>` : ''}
+        ${x.url ? `<a class="link" href="${esc(linkUrl(x.url))}" target="_blank" rel="noopener">관련 링크</a>` : ''}
       </div>
     </article>`;
 
@@ -309,7 +351,7 @@ function renderNotices(items = []) {
       </div>
       <h3>${esc(x.title || '')}</h3>
       ${x.content ? `<p class="body-text">${esc(x.content)}</p>` : ''}
-      ${x.url ? `<a class="link" href="${esc(x.url)}" target="_blank" rel="noopener">자세히 보기</a>` : ''}
+      ${x.url ? `<a class="link" href="${esc(linkUrl(x.url))}" target="_blank" rel="noopener">자세히 보기</a>` : ''}
     </article>`).join('')
     : '<p class="empty">등록된 공지가 없습니다.</p>';
 
@@ -357,7 +399,7 @@ function resourceCard(x) {
       <span class="pill">잠금</span>
     </article>`;
 
-  const target = x.url || x.file || '';
+  const target = linkUrl(x.url || x.file);
   return `
     <article class="res">
       ${x.image ? `<img src="${imageUrl(x.image)}" alt="" ${DROP_ON_ERROR}>` : ''}
@@ -464,7 +506,7 @@ function drawRecords() {
         <h3>${esc(x.title || '')}</h3>
         ${x.summary ? `<p class="body-text">${esc(x.summary)}</p>` : ''}
         ${x.content ? `<details class="fold"><summary>전체 기록 보기</summary><p class="body-text">${esc(x.content)}</p></details>` : ''}
-        ${x.url ? `<a class="btn" href="${esc(x.url)}" target="_blank" rel="noopener">로그 열기</a>` : ''}
+        ${x.url ? `<a class="btn" href="${esc(linkUrl(x.url))}" target="_blank" rel="noopener">로그 열기</a>` : ''}
       </div>
     </article>`).join('')
     : `<p class="empty">${q ? `"${esc(q)}"와 맞는 기록이 없습니다.` : '등록된 세션 기록이 없습니다.'}</p>`;
