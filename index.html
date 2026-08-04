@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="TRPG_TEAM 캐릭터 아카이브">
+  <title>TRPG_TEAM</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Nanum+Myeongjo:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/site.css">
+</head>
+<body>
+  <button class="mobile-menu" id="mobileMenu" aria-label="사이드바 열기">☰</button>
+  <div class="overlay" id="overlay"></div>
+
+  <div class="page-shell">
+    <header class="hero">
+      <img id="heroImage" src="assets/images/office.jpg" alt="헤더 배너">
+      <div class="hero-shade"></div>
+      <div class="hero-copy">
+        <span class="eyebrow" id="teamName">TRPG_TEAM</span>
+        <h1 id="siteTitle">Character Archive</h1>
+        <p id="siteDescription">우리들의 세션과 캐릭터를 기록합니다.</p>
+      </div>
+    </header>
+
+    <div class="layout">
+      <aside class="sidebar" id="sidebar">
+        <section class="profile-card">
+          <img id="profileImage" class="profile-image" src="assets/images/icon.jpg" alt="프로필">
+          <h2 id="profileName">탁 이름</h2>
+          <p id="profileSub1">탁 소개 1</p>
+          <p id="profileSub2">탁 소개 2</p>
+          <p class="since" id="profileSince">since 2000.01.01</p>
+          <a id="mainLink" class="accent-button" href="https://ccfolia.com" target="_blank" rel="noopener">CCFOLIA</a>
+        </section>
+
+        <section class="music-card">
+          <img id="musicThumb" src="https://img.youtube.com/vi/YKQ9v_cz9Y4/mqdefault.jpg" alt="음악 썸네일">
+          <div>
+            <strong id="musicTitle">The Legend of Ashitaka</strong>
+            <span id="musicArtist">Joe Hisaishi</span>
+          </div>
+          <a id="musicLink" href="https://youtu.be/YKQ9v_cz9Y4" target="_blank" rel="noopener" aria-label="음악 열기">▶</a>
+        </section>
+
+        <section class="character-shortcuts" id="characterShortcuts"></section>
+        <section class="calendar" id="calendar"></section>
+      </aside>
+
+      <main class="main">
+        <nav class="tabs" id="tabs">
+          <button class="tab active" data-tab="home">Home</button>
+          <button class="tab" data-tab="characters">Characters</button>
+          <button class="tab" data-tab="npc">NPC</button>
+          <button class="tab" data-tab="gallery">Gallery</button>
+          <button class="tab" data-tab="backup">Backup</button>
+        </nav>
+
+        <section class="panel active" id="home">
+          <img id="mainImage" class="main-art" src="assets/images/main.png" alt="메인 일러스트">
+        </section>
+
+        <section class="panel" id="characters">
+          <div class="section-head"><div><span class="eyebrow">CHARACTERS</span><h2>캐릭터</h2></div></div>
+          <div id="characterList" class="character-list"></div>
+        </section>
+
+        <section class="panel" id="npc">
+          <div class="section-head"><div><span class="eyebrow">RELATIONS</span><h2>NPC</h2></div></div>
+          <div id="npcGrid" class="npc-grid"></div>
+        </section>
+
+        <section class="panel" id="gallery">
+          <div class="section-head"><div><span class="eyebrow">MEMORIES</span><h2>Gallery</h2></div></div>
+          <div id="galleryGrid" class="gallery-grid"></div>
+        </section>
+
+        <section class="panel" id="backup">
+          <div class="section-head"><div><span class="eyebrow">SESSION LOG</span><h2>Backup</h2></div></div>
+          <div id="backupList"></div>
+        </section>
+      </main>
+    </div>
+
+    <footer id="footerText">© 2026 TRPG_TEAM. All rights reserved.</footer>
+  </div>
+
+  <dialog id="lightbox" class="lightbox">
+    <button id="lightboxClose" aria-label="닫기">✕</button>
+    <img id="lightboxImage" alt="갤러리 이미지">
+    <p id="lightboxCredit"></p>
+  </dialog>
+
+  <script src="assets/js/site.js" defer></script>
+</body>
+</html>

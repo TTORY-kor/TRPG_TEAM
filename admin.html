@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>TRPG_TEAM 관리자</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/admin.css">
+</head>
+<body>
+  <div class="admin-layout">
+    <aside class="admin-sidebar">
+      <div class="brand"><span>TRPG_TEAM</span><strong>CMS</strong></div>
+      <nav>
+        <button class="admin-nav active" data-view="dashboard">대시보드</button>
+        <button class="admin-nav" data-view="site">사이트 설정</button>
+        <button class="admin-nav" data-view="images">이미지 관리</button>
+        <button class="admin-nav" data-view="characters">캐릭터</button>
+        <button class="admin-nav" data-view="npc">NPC</button>
+        <button class="admin-nav" data-view="gallery">갤러리</button>
+        <button class="admin-nav" data-view="events">캘린더</button>
+      </nav>
+      <a class="view-site" href="./" target="_blank" rel="noopener">사이트 열기 ↗</a>
+    </aside>
+
+    <main class="admin-main">
+      <header class="admin-topbar">
+        <div><p class="eyebrow">CONTROL PANEL</p><h1 id="viewTitle">대시보드</h1></div>
+        <button id="saveAll" class="primary">변경사항 게시</button>
+      </header>
+
+      <section class="connection-card">
+        <label><span>Worker 주소</span><input id="workerUrl" type="url" placeholder="https://trpg-team-admin.계정.workers.dev"></label>
+        <label><span>관리자 비밀번호</span><input id="adminPassword" type="password" autocomplete="current-password"></label>
+        <button id="loadRemote" class="secondary">저장소 데이터 불러오기</button>
+      </section>
+
+      <div id="status" class="status" aria-live="polite"></div>
+
+      <section class="view active" id="view-dashboard">
+        <div class="stat-cards">
+          <article><span>캐릭터</span><strong id="countCharacters">0</strong></article>
+          <article><span>NPC</span><strong id="countNpc">0</strong></article>
+          <article><span>갤러리</span><strong id="countGallery">0</strong></article>
+          <article><span>일정</span><strong id="countEvents">0</strong></article>
+        </div>
+        <div class="card"><h2>사용 방법</h2><ol><li>Worker 주소와 비밀번호를 입력합니다.</li><li>저장소 데이터를 불러옵니다.</li><li>왼쪽 메뉴에서 내용을 수정합니다.</li><li>변경사항 게시를 누르면 GitHub에 자동 커밋됩니다.</li></ol></div>
+      </section>
+
+      <section class="view" id="view-site"><div class="card"><h2>사이트 설정</h2><div id="siteFields" class="form-grid"></div></div></section>
+
+      <section class="view" id="view-images">
+        <div class="card"><h2>이미지 업로드</h2><div class="form-grid two">
+          <label><span>저장 파일명</span><input id="imageFileName" value="main.png"></label>
+          <label><span>이미지 선택</span><input id="imageFile" type="file" accept="image/png,image/jpeg,image/webp,image/gif"></label>
+        </div>
+        <div id="imagePreview" class="image-preview" hidden><img alt="미리보기"><div></div></div>
+        <button id="uploadImage" class="primary wide">이미지만 업로드</button></div>
+      </section>
+
+      <section class="view" id="view-characters"><div class="card"><div class="card-head"><h2>캐릭터</h2><button id="addCharacter" class="secondary">+ 추가</button></div><div id="characterEditor" class="editor-list"></div></div></section>
+      <section class="view" id="view-npc"><div class="card"><div class="card-head"><h2>NPC</h2><button id="addNpc" class="secondary">+ 추가</button></div><div id="npcEditor" class="editor-list"></div></div></section>
+      <section class="view" id="view-gallery"><div class="card"><div class="card-head"><h2>갤러리</h2><button id="addGallery" class="secondary">+ 추가</button></div><div id="galleryEditor" class="editor-list"></div></div></section>
+      <section class="view" id="view-events"><div class="card"><div class="card-head"><h2>캘린더</h2><button id="addEvent" class="secondary">+ 일정 추가</button></div><div id="eventEditor" class="editor-list"></div></div></section>
+    </main>
+  </div>
+  <script src="assets/js/admin.js" defer></script>
+</body>
+</html>

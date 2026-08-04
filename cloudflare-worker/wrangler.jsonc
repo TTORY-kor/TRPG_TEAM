@@ -1,0 +1,10 @@
+{
+  "name": "trpg-team-admin",
+  "main": "worker.js",
+  "compatibility_date": "2026-08-01",
+  "vars": {
+    "GITHUB_OWNER": "TTORY-kor",
+    "GITHUB_REPO": "TRPG_TEAM",
+    "GITHUB_BRANCH": "main"
+  }
+}
