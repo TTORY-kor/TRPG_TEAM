@@ -791,3 +791,108 @@ details.fold .body-text{margin-top:10px}
   max-width:calc(100% - 32px);
 }
 #refreshBtn:disabled{opacity:.4;cursor:default}
+
+/* ── 세션 도입 ────────────────────────────────────────── */
+.intro{
+  margin-top:22px;
+  border:1px solid var(--line);
+  border-radius:var(--r);
+  overflow:hidden;
+}
+.intro[hidden]{display:none}
+.intro-media{position:relative;line-height:0;background:var(--dark-card)}
+.intro-media img{width:100%;height:200px;object-fit:cover;display:block;opacity:.9}
+.intro-media::after{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(180deg,transparent 40%,color-mix(in srgb,var(--card) 92%,transparent));
+}
+.intro > .intro-body{padding:28px 30px 26px}
+.intro h2{
+  font-family:var(--display);
+  font-size:1.6rem;font-weight:700;
+  margin:9px 0 0;letter-spacing:.02em;
+}
+.intro h2[hidden],.intro-sub[hidden],.intro-text[hidden]{display:none}
+.intro-sub{
+  margin:7px 0 0;
+  font-family:var(--display);
+  font-size:1rem;color:var(--sub);
+}
+.intro-text{
+  margin-top:20px;
+  font-family:var(--display);
+  font-size:1.02rem;line-height:1.95;
+  color:var(--text);
+}
+.intro-facts{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));
+  gap:0 22px;margin:24px 0 0;
+}
+.intro-facts:empty{display:none}
+.intro-facts > div{padding:10px 0;border-bottom:1px solid var(--line)}
+.intro-facts dt{
+  font-family:var(--mono);font-size:.63rem;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--sub);margin-bottom:3px;
+}
+.intro-facts dd{margin:0;font-size:.88rem}
+.intro-credit{
+  display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 14px;
+  margin:22px 0 0;
+  font-family:var(--mono);font-size:.7rem;color:var(--sub);
+}
+.intro-credit:empty{display:none}
+@media (max-width:900px){
+  .intro > .intro-body{padding:22px 20px}
+  .intro-media img{height:150px}
+  .intro-facts{grid-template-columns:1fr}
+}
+
+/* ── 여러 명 진행용 ───────────────────────────────────── */
+.picker select{
+  border:1px solid var(--line);
+  background:var(--card);color:var(--text);
+  border-radius:var(--r-sm);
+  padding:8px 11px;font-size:.85rem;
+}
+.res .who{
+  position:absolute;right:12px;top:12px;
+  font-family:var(--mono);font-size:.62rem;letter-spacing:.1em;
+  background:var(--accent-soft);color:var(--accent);
+  border:1px solid var(--accent-line);
+  border-radius:999px;padding:2px 9px;
+  max-width:60%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+}
+.res.locked .who{position:static;margin-bottom:10px}
+
+/* ── 바로가기 ─────────────────────────────────────────── */
+.quick{margin-bottom:20px}
+.quick[hidden]{display:none}
+.quick-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+  gap:10px;margin-top:11px;
+}
+.quick-card{
+  display:grid;gap:3px;
+  padding:14px 16px;
+  border:1px solid var(--accent-line);
+  border-radius:var(--r);
+  background:var(--accent-soft);
+  text-decoration:none;color:var(--text);
+  transition:border-color .15s, transform .15s;
+}
+.quick-card:hover{border-color:var(--accent);transform:translateY(-1px)}
+.quick-card strong{font-size:.94rem;font-weight:700;color:var(--accent)}
+.quick-card span{font-size:.78rem;color:var(--sub);line-height:1.5}
+
+/* ── 세션 안내 ────────────────────────────────────────── */
+.guide[hidden]{display:none}
+.guide-item{margin-top:0}
+.guide .stack{gap:8px}
+#noticeHead{margin-top:30px}
+
+/* ── 관계 인물 소속 ───────────────────────────────────── */
+.npc-group{
+  margin:0 0 7px;
+  font-family:var(--mono);font-size:.63rem;letter-spacing:.1em;
+  color:var(--accent);text-transform:uppercase;
+}
