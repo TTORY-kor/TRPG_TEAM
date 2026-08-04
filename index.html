@@ -104,7 +104,11 @@
       </nav>
 
       <section class="panel card" id="home" role="tabpanel" aria-labelledby="tab-home" tabindex="-1">
-        <img id="mainImage" class="main-art" src="assets/images/main.png" alt="">
+        <section class="quick" id="quick" hidden>
+          <p class="eyebrow">바로가기</p>
+          <div class="quick-grid" id="quickGrid"></div>
+        </section>
+
         <div class="dash">
           <section>
             <p class="eyebrow">다음 일정</p>
@@ -119,6 +123,21 @@
             <div id="dashResources" class="dash-body"><p class="loading">불러오는 중</p></div>
           </section>
         </div>
+
+        <img id="mainImage" class="main-art" src="assets/images/main.png" alt="">
+
+        <section class="intro" id="intro" hidden>
+          <div class="intro-media" id="introMedia" hidden><img id="introImage" src="" alt=""></div>
+          <div class="intro-body">
+            <p class="eyebrow">SESSION INTRO</p>
+            <h2 id="introTitle"></h2>
+            <p class="intro-sub" id="introSub"></p>
+            <div class="intro-text body-text" id="introText"></div>
+            <dl class="intro-facts" id="introFacts"></dl>
+            <p class="intro-credit"><span id="introCredit"></span><a id="introLink" class="link" href="#" target="_blank" rel="noopener" hidden>원작 보기</a></p>
+          </div>
+        </section>
+
       </section>
 
       <section class="panel card" id="schedule" role="tabpanel" aria-labelledby="tab-schedule" tabindex="-1" hidden>
@@ -131,6 +150,13 @@
 
       <section class="panel card" id="notices" role="tabpanel" aria-labelledby="tab-notices" tabindex="-1" hidden>
         <div class="head"><p class="eyebrow">NOTICE</p><h2>공지사항</h2></div>
+
+        <section class="guide" id="guide" hidden>
+          <h3 class="subhead">세션 안내</h3>
+          <div id="guideList" class="stack"></div>
+        </section>
+
+        <h3 class="subhead" id="noticeHead">공지 목록</h3>
         <div id="noticeList" class="stack"><p class="loading">불러오는 중</p></div>
       </section>
 
@@ -142,9 +168,13 @@
             <button class="seg" data-kind="sheet">시트</button>
             <button class="seg" data-kind="handout">핸드아웃</button>
           </div>
+          <label class="picker" id="resourceWhoWrap" hidden>
+            <span class="sr-only">대상 고르기</span>
+            <select id="resourceWho"><option value="">대상 전체</option></select>
+          </label>
           <label class="search">
             <span class="sr-only">자료 검색</span>
-            <input type="search" id="resourceSearch" placeholder="제목·설명으로 찾기" autocomplete="off">
+            <input type="search" id="resourceSearch" placeholder="제목·설명·대상으로 찾기" autocomplete="off">
           </label>
         </div>
         <div id="resourceGrid" class="grid"><p class="loading">불러오는 중</p></div>
