@@ -247,8 +247,96 @@ function closeSidebar() {
   $('#navToggle').setAttribute('aria-expanded', 'false');
 }
 
+/* ═══ 바로가기 ════════════════════════════════════════
+   롤20 방, 카카오톡 방, 배포글 같은 매번 누르는 주소.
+   강조 열에 O 를 넣은 것만 홈 위쪽에 큰 버튼으로 나옵니다. */
+function renderLinks(rows = []) {
+  const list = visible(rows.map(r => ({
+    name: S(r, '이름'),
+    url: S(r, '주소'),
+    description: S(r, '설명'),
+    featured: YES(S(r, '강조')),
+    status: statusOf(r)
+  }))).filter(x => x.name && x.url);
+
+  /* 사이드바 — 전부, 한 줄로 */
+  $('#profileLinks').innerHTML = list
+    .map(x => `<a href="${esc(linkUrl(x.url))}" target="_blank" rel="noopener">${esc(x.name)}</a>`)
+    .join('');
+
+  /* 홈 위쪽 — 강조한 것만. 하나도 없으면 전부 */
+  const top = list.filter(x => x.featured);
+  const shown = top.length ? top : list;
+  $('#quick').hidden = shown.length === 0;
+  $('#quickGrid').innerHTML = shown.map(x => `
+    <a class="quick-card" href="${esc(linkUrl(x.url))}" target="_blank" rel="noopener">
+      <strong>${esc(x.name)}</strong>
+      ${x.description ? `<span>${esc(x.description)}</span>` : ''}
+    </a>`).join('');
+}
+
+/* ═══ 세션 안내 ═══════════════════════════════════════
+   준비물, 진행 도구, 규칙 같은 한 번 정해두고 계속 보는 것들. */
+function renderGuide(rows = []) {
+  const list = visible(rows.map(r => ({
+    title: S(r, '항목'),
+    content: S(r, '내용'),
+    status: statusOf(r)
+  }))).filter(x => x.title);
+
+  $('#guide').hidden = list.length === 0;
+  $('#guideList').innerHTML = list.map(x => `
+    <details class="fold guide-item"${list.length <= 3 ? ' open' : ''}>
+      <summary>${esc(x.title)}</summary>
+      <p class="body-text">${esc(x.content)}</p>
+    </details>`).join('');
+}
+
+/* ═══ 세션 도입 ═══════════════════════════════════════
+   도입 탭은 "항목 / 값" 두 열입니다.
+   제목·부제·본문·원작·링크·이미지는 정해진 자리에 들어가고,
+   그 밖의 줄은 아래 개요 표에 순서대로 쌓입니다. */
+const INTRO_KEYS = ['제목', '부제', '본문', '원작', '링크', '이미지'];
+
+function renderIntro(rows = []) {
+  const known = {};
+  const facts = [];
+  rows.forEach(r => {
+    const k = S(r, '항목'), v = S(r, '값');
+    if (!k || !v) return;
+    if (INTRO_KEYS.includes(k)) known[k] = v;
+    else facts.push([k, v]);
+  });
+
+  const hasAny = INTRO_KEYS.some(k => known[k]) || facts.length;
+  $('#intro').hidden = !hasAny;
+  if (!hasAny) return;
+
+  $('#introTitle').textContent = known['제목'] || '';
+  $('#introTitle').hidden = !known['제목'];
+  $('#introSub').textContent = known['부제'] || '';
+  $('#introSub').hidden = !known['부제'];
+  $('#introText').textContent = known['본문'] || '';
+  $('#introText').hidden = !known['본문'];
+
+  const media = $('#introMedia'), img = $('#introImage');
+  if (known['이미지']) {
+    img.src = imageUrl(known['이미지']);
+    img.onerror = () => media.hidden = true;
+    media.hidden = false;
+  } else media.hidden = true;
+
+  $('#introFacts').innerHTML = facts
+    .map(([k, v]) => `<div><dt>${esc(k)}</dt><dd>${esc(v)}</dd></div>`).join('');
+
+  $('#introCredit').textContent = known['원작'] || '';
+  const link = $('#introLink');
+  if (known['링크']) { link.href = linkUrl(known['링크']); link.hidden = false; }
+  else link.hidden = true;
+}
+
 /* ═══ 설정 · 링크 ═════════════════════════════════════ */
-function renderSite(settingRows = [], linkRows = []) {
+function renderSite(settingRows = []) {
   /* 설정 탭은 "항목 / 값" 두 열입니다 */
   const s = {};
   settingRows.forEach(r => {
@@ -284,11 +372,6 @@ function renderSite(settingRows = [], linkRows = []) {
   main.onerror = () => main.hidden = true;
 
   $('#footerText').textContent = s['하단문구'] || `© ${new Date().getFullYear()} ${team}`;
-
-  $('#profileLinks').innerHTML = linkRows
-    .filter(r => S(r, '이름') && S(r, '주소'))
-    .map(r => `<a href="${esc(linkUrl(S(r, '주소')))}" target="_blank" rel="noopener">${esc(S(r, '이름'))}</a>`)
-    .join('');
 
   const yt = (s['유튜브ID'] || '').trim();
   const hasMusic = yt || s['음악제목'];
@@ -407,12 +490,14 @@ function renderNotices(rows = []) {
 /* ═══ 자료 ═══════════════════════════════════════════ */
 let resourceCache = [];
 let resourceKind = 'all';
+let resourceWho = '';
 
 function renderResources(rows = []) {
   resourceCache = visible(rows.map(r => ({
     _kind: /시트/.test(S(r, '종류')) ? 'sheet' : 'handout',
     title: S(r, '제목'),
     owner: S(r, '담당'),
+    who: S(r, '대상'),
     category: S(r, '분류'),
     description: S(r, '설명'),
     image: S(r, '이미지'),
@@ -421,6 +506,14 @@ function renderResources(rows = []) {
     date: dateKey(S(r, '등록일')),
     status: statusOf(r)
   })));
+
+  /* 대상이 하나라도 적혀 있으면 대상 고르개를 띄웁니다 */
+  const whoList = [...new Set(resourceCache.map(x => x.who).filter(Boolean))];
+  const sel = $('#resourceWho');
+  sel.innerHTML = '<option value="">대상 전체</option>' +
+    whoList.map(w => `<option value="${esc(w)}">${esc(w)}</option>`).join('');
+  $('#resourceWhoWrap').hidden = whoList.length === 0;
+  resourceWho = '';
 
   drawResources();
 
@@ -441,8 +534,11 @@ function renderResources(rows = []) {
 
 function resourceCard(x) {
   const kindLabel = x._kind === 'sheet' ? 'Sheet' : (x.category || 'Handout');
+  const whoTag = x.who ? `<span class="who">${esc(x.who)}</span>` : '';
+
   if (isLocked(x)) return `
     <article class="res locked">
+      ${whoTag}
       <div class="lock" aria-hidden="true">🔒</div>
       <h3>${esc(x.title)}</h3>
       <p class="body-text">${esc(x.description || '아직 공개되지 않았습니다.')}</p>
@@ -452,6 +548,7 @@ function resourceCard(x) {
   const target = linkUrl(x.url);
   return `
     <article class="res">
+      ${whoTag}
       ${x.image ? `<img src="${imageUrl(x.image)}" alt="" ${DROP_ON_ERROR}>` : ''}
       <p class="res-kind">${esc(kindLabel)}</p>
       <h3>${esc(x.title)}</h3>
@@ -466,8 +563,9 @@ function drawResources() {
   const q = ($('#resourceSearch').value || '').trim().toLowerCase();
   const list = resourceCache.filter(x => {
     if (resourceKind !== 'all' && x._kind !== resourceKind) return false;
+    if (resourceWho && x.who !== resourceWho) return false;
     if (!q) return true;
-    return [x.title, x.description, x.owner, x.category]
+    return [x.title, x.description, x.owner, x.category, x.who]
       .some(v => String(v || '').toLowerCase().includes(q));
   });
   $('#resourceGrid').innerHTML = list.length
@@ -493,6 +591,7 @@ function renderCharacters(rows = []) {
       job: S(r, '직업'),
       age: S(r, '나이'),
       location: S(r, '거주지'),
+      player: S(r, '플레이어'),
       story,
       status: statusOf(r)
     };
@@ -517,6 +616,7 @@ function renderCharacters(rows = []) {
             <div><span>직업</span>${esc(c.job || '—')}</div>
             <div><span>나이</span>${esc(c.age || '—')}</div>
             <div><span>거주지</span>${esc(c.location || '—')}</div>
+            ${c.player ? `<div><span>플레이어</span>${esc(c.player)}</div>` : ''}
           </div>
           <div class="story">
             ${c.story.map(s => `
@@ -540,6 +640,7 @@ function renderNpc(rows = []) {
     name: S(r, '이름'),
     image: S(r, '이미지'),
     relation: S(r, '관계'),
+    group: S(r, '소속'),
     description: S(r, '설명'),
     status: statusOf(r)
   })));
@@ -549,6 +650,7 @@ function renderNpc(rows = []) {
       ${n.relation ? `<span class="tag" style="background:${colors[n.relation] || '#5a6070'}">${esc(n.relation)}</span>` : ''}
       <img src="${imageUrl(n.image)}" alt="" ${HIDE_ON_ERROR}>
       <h3>${esc(n.name)}</h3>
+      ${n.group ? `<p class="npc-group">${esc(n.group)}</p>` : ''}
       ${n.description ? `<p class="body-text">${esc(n.description)}</p>` : ''}
     </article>`).join('')
     : '<p class="empty">등록된 관계 인물이 없습니다.</p>';
@@ -705,14 +807,17 @@ async function loadAll({ quiet = false } = {}) {
   $('#hero').hidden = false;
   $('#layout').hidden = false;
 
-  const keys = ['설정', '링크', '일정', '공지', '자료', '인물', '관계인물', '기록', '갤러리'];
+  const keys = ['설정', '도입', '링크', '안내', '일정', '공지', '자료', '인물', '관계인물', '기록', '갤러리'];
   const results = await Promise.allSettled(keys.map(readTab));
   const at = k => results[keys.indexOf(k)];
   const ok = k => at(k).status === 'fulfilled';
   const val = k => ok(k) ? at(k).value : [];
   const why = k => ok(k) ? '' : String(at(k).reason?.message || '');
 
-  renderSite(val('설정'), val('링크'));
+  renderSite(val('설정'));
+  renderLinks(val('링크'));
+  renderGuide(val('안내'));
+  renderIntro(val('도입'));
 
   ok('일정') ? renderSchedules(val('일정'))
              : (fail('#scheduleUpcoming', '일정', why('일정')),
@@ -763,6 +868,7 @@ document.addEventListener('DOMContentLoaded', () => {
   $('#nextLine').addEventListener('click', () => showTab('schedule'));
 
   $('#resourceSearch').addEventListener('input', drawResources);
+  $('#resourceWho').addEventListener('change', e => { resourceWho = e.target.value; drawResources(); });
   $('#recordSearch').addEventListener('input', drawRecords);
   $('#resourceSeg').addEventListener('click', e => {
     const seg = e.target.closest('.seg');
