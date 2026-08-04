@@ -1,6 +1,6 @@
 {
-  "heroImage": "office.jpg",
-  "mainImage": "main.png",
+  "heroImage": "/assets/images/남선알미늄.png",
+  "mainImage": "/assets/images/타이틀_꽃중독자.png",
   "teamName": "TRPG_TEAM",
   "musicArtist": "Joe Hisaishi",
   "colors": {
@@ -21,7 +21,7 @@
     }
   ],
   "profileSince": "since 2000.01.01",
-  "profileImage": "icon.jpg",
+  "profileImage": "/assets/images/타이틀_꽃중독자.png",
   "musicTitle": "The Legend of Ashitaka",
   "profileName": "탁 이름",
   "title": "Character Archive",
